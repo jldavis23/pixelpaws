@@ -1,12 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/dist/output.css" rel="stylesheet">
     <title>PixelPaws</title>
 </head>
+
 <body>
-    <h1 class="p-10">Hello</h1>
+    <main class="p-8 flex flex-col gap-3">
+        <div class="grid grid-cols-7 gap-3">
+            <div class="col-span-3 border border-slate-300 rounded p-7">
+                <h2 class="mb-2 text-xl leading-none">NAME</h2>
+
+                <div class="flex gap-3">
+                    <img src="images/dog.jpg" class="w-1/2 aspect-w-3 aspect-h-2">
+
+                    <div class="flex flex-col gap-3 w-1/2">
+                        <div>
+                            <p class="text-sm leading-none">Happiness</p>
+                            <progress class="progress progress-primary w-full" value="0" max="100"></progress>
+                        </div>
+
+                        <div>
+                            <p class="text-sm leading-none">Health</p>
+                            <progress class="progress progress-primary" value="10" max="100"></progress>
+                        </div>
+
+                        <div>
+                            <p class="text-sm leading-none">Hunger</p>
+                            <progress class="progress progress-primary" value="10" max="100"></progress>
+                        </div>
+
+                        <div>
+                            <p class="text-sm leading-none">Sleep</p>
+                            <progress class="progress progress-primary" value="10" max="100"></progress>
+                        </div>
+
+                        <p>Personality: <span>Quiet</span></p>
+                    </div>
+                </div>
+ 
+                <p class="text-primary text-lg mt-5">MONEY: []</p> 
+            </div>
+
+            <div class="col-span-2 border border-slate-300 rounded p-7">
+                <h2 class="mb-3 text-xl leading-none">SKILLS</h2>
+
+
+                <div class="grid grid-cols-1 gap-3">
+                    <div>
+                        <p class="text-sm leading-none">Agility</p>
+                        <progress class="progress progress-secondary w-full" value="0" max="100"></progress>
+                    </div>
+
+                    <div>
+                        <p class="text-sm leading-none">Strength</p>
+                        <progress class="progress progress-secondary" value="10" max="100"></progress>
+                    </div>
+
+                    <div>
+                        <p class="text-sm leading-none">Intelligence</p>
+                        <progress class="progress progress-secondary" value="10" max="100"></progress>
+                    </div>
+
+                    <div>
+                        <p class="text-sm leading-none">Agility</p>
+                        <progress class="progress progress-secondary w-full" value="0" max="100"></progress>
+                    </div>
+
+                    <div>
+                        <p class="text-sm leading-none">Strength</p>
+                        <progress class="progress progress-secondary" value="10" max="100"></progress>
+                    </div>
+
+                    <div>
+                        <p class="text-sm leading-none">Intelligence</p>
+                        <progress class="progress progress-secondary" value="10" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-2 border border-slate-300 rounded p-7">
+                <h2 class="mb-2 text-xl leading-none">THINGS TO DO</h2>
+
+                <div class="flex flex-col gap-3">
+                    <div class="tooltip tooltip-left tooltip-accent" data-tip="hello"><button class="btn btn-outline w-full">Play a Mini-Game</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline w-full">Skill Training</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline w-full">Buy Items</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline w-full">Enter a Contest</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline w-full">Go on an Adventure</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3">
+            <div class="bg-slate-600">
+                history
+            </div>
+            <div class="bg-emerald-700">
+                inventory
+            </div>
+            
+        </div>
+
+        <div class="grid grid-cols-2">
+            <div class="bg-slate-600">
+                money
+            </div>
+            <div class="bg-emerald-700">
+                achievements
+            </div>
+        </div>
+    </main>
 </body>
+
 </html>
