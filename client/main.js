@@ -1,15 +1,52 @@
+const main = document.querySelector('#main')
+const choosePetForm = document.querySelector('#choose-pet-form')
 const dashboard = document.querySelector('#dashboard')
-const choosePet = document.querySelector('#choose-pet')
-const petPic = document.querySelector('#pet-pic')
+dashboard.remove()
 
-for (const child of choosePet.children) {
-    child.addEventListener('click', () => renderGame(child.id))
+let myPet = {
+    type: '',
+    name: '',
+    personality: '',
 }
 
-const renderGame = (pet) => {
-    petPic.src = `images/${pet}.jpg`
-    dashboard.classList.remove('hidden')
+const renderGame = (e) => {
+    e.preventDefault()
 
-    const beginScreen = document.querySelector('#begin-screen')
-    beginScreen.classList.add('hidden')
+    main.appendChild(dashboard)
+
+    // Assign the selected pet type
+    const petOptions = document.getElementsByName('pet-options')
+    let selectedPet
+    for (let i = 0; i < petOptions.length; i++) {
+        if (petOptions[i].checked) selectedPet = petOptions[i].value
+    }
+    myPet.type = selectedPet
+    const petPic = document.querySelector('#pet-pic')
+    petPic.src = `images/${selectedPet}.jpg`
+    
+    // Assign the inputed name
+    const nameInput = document.querySelector('#name-input')
+    myPet.name = nameInput.value
+    const petName = document.querySelector('#pet-name')
+    petName.textContent = nameInput.value
+
+    // Assign the pet's personality
+    const personalityOptions = document.getElementsByName('personality-options')
+    let selectedPersonality
+    for (let i = 0; i < personalityOptions.length; i++) {
+        if (personalityOptions[i].checked) selectedPersonality = personalityOptions[i].value
+    }
+    myPet.personality = selectedPersonality
+    const petPersonality = document.querySelector('#pet-personality')
+    petPersonality.textContent = selectedPersonality
+    
+    choosePetForm.remove()
 }
+
+const beginGameBtn = document.querySelector('#begin-game')
+beginGameBtn.addEventListener('click', renderGame)
+
+
+// for (const child of choosePet.children) {
+//     child.addEventListener('click', () => renderGame(child.id))
+// }

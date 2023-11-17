@@ -6,14 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/dist/output.css" rel="stylesheet">
     <title>PixelPaws</title>
+
+    <style>
+        [type=radio]:checked+img {
+            outline: 2px solid #141414;
+        }
+    </style>
 </head>
 
 <body>
-    <main class="p-7 flex flex-col gap-3 font-mono">
+    <main id="main" class="p-7 flex flex-col gap-3 font-mono">
 
-        <section id="dashboard" class="grid grid-cols-7 gap-3 hidden">
+        <section id="dashboard" class="grid grid-cols-7 gap-3">
             <div class="col-span-7 md:col-span-4 lg:col-span-3 border border-neutral rounded p-7">
-                <h2 class="mb-2 text-lg leading-none">NAME</h2>
+                <h2 id="pet-name" class="mb-2 text-lg leading-none"></h2>
 
                 <div class="flex gap-2">
                     <img src="" id="pet-pic" class="w-1/2 aspect-w-3 aspect-h-2">
@@ -39,12 +45,12 @@
                             <progress class="progress progress-primary" value="100" max="100"></progress>
                         </div>
 
-                        <p>Personality: <span>Quiet</span></p>
-                        <p class="text-primary text-base">MONEY: $</p> 
+                        <p>Personality: <span id="pet-personality">Quiet</span></p>
+                        <p class="text-primary text-base">MONEY: $</p>
                     </div>
                 </div>
- 
-                
+
+
             </div>
 
             <div class="col-span-7 md:col-span-3 lg:col-span-2 border border-neutral rounded p-7">
@@ -88,11 +94,16 @@
                 <h2 class="mb-3 text-lg leading-none">THINGS TO DO</h2>
 
                 <div class="flex flex-col gap-3">
-                    <div class="tooltip tooltip-left tooltip-accent" data-tip="hello"><button class="btn btn-sm btn-outline w-full">Play a Mini-Game</button></div>
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline btn-sm w-full">Skill Training</button></div>
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline btn-sm w-full">Buy Items</button></div>
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline btn-sm w-full">Enter a Contest</button></div>
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button class="btn btn-outline btn-sm w-full">Go on an Adventure</button></div>
+                    <div class="tooltip tooltip-left tooltip-accent" data-tip="hello"><button
+                            class="btn btn-sm btn-outline w-full">Play a Mini-Game</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+                            class="btn btn-outline btn-sm w-full">Skill Training</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+                            class="btn btn-outline btn-sm w-full">Buy Items</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+                            class="btn btn-outline btn-sm w-full">Enter a Contest</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+                            class="btn btn-outline btn-sm w-full">Go on an Adventure</button></div>
                 </div>
             </div>
 
@@ -134,19 +145,53 @@
                 <h2 class="mb-3 text-lg leading-none">ACHIEVEMENTS</h2>
             </div>
         </section>
-        
-        
-        <section id="begin-screen" class="h-screen flex flex-col justify-center items-center gap-8">
+
+
+        <form id="choose-pet-form" class="flex flex-col justify-center items-center gap-12">
             <div class="text-center">
                 <h1 class="font-bold">welcome to pixelpaws</h1>
-                <p class="text-sm">choose your pet</p>
             </div>
 
-            <div id="choose-pet" class="flex gap-6">
-                <img src="images/cat.jpg" id="cat" class="w-36 transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
-                <img src="images/dog.jpg" id="dog" class="w-36 transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
+            <div>
+                <p class="text-sm text-center mb-2">choose your pet</p>
+
+                <div class="flex flex-col md:flex-row gap-6">
+                    <label class="">
+                        <input type="radio" class="hidden" name="pet-options" value="cat" required>
+                        <img src="images/cat.jpg" id="cat"
+                            class="w-36 transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
+                    </label>
+
+                    <label>
+                        <input type="radio" class="hidden" value="dog" name="pet-options">
+                        <img src="images/dog.jpg" id="dog"
+                        class="w-36 transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
+                    </label>
+                    
+                </div>
             </div>
-        </section>
+
+            <div>
+                <p class="text-sm text-center mb-2">name your pet</p>
+                <input type="text" placeholder="name" maxlength="10" id="name-input"
+                    class="input input-bordered w-full border-[#141414]" required />
+            </div>
+
+            <div>
+                <p class="text-sm text-center mb-2">choose your pet's personality</p>
+
+                <div class="join">
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Lively" value="lively"
+                        required />
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Mellow" value="mellow"/>
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Playful" value="playful"/>
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Quirky" value="quirky"/>
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Cautious" value="cautious"/>
+                </div>
+            </div>
+
+            <button id="begin-game" class="btn">BEGIN</button>
+        </form>
 
     </main>
 
