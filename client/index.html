@@ -28,17 +28,20 @@
                     <div class="flex flex-col gap-3 w-1/2 text-xs leading-tight">
                         <div>
                             <p>Happiness <span id="happiness-label">100%</span></p>
-                            <progress id="happiness-bar" class="progress progress-primary" value="100" max="100"></progress>
+                            <progress id="happiness-bar" class="progress progress-primary" value="100"
+                                max="100"></progress>
                         </div>
 
                         <div>
                             <p>Health <span id="health-label">100%</span></p>
-                            <progress id="health-bar" class="progress progress-primary" value="100" max="100"></progress>
+                            <progress id="health-bar" class="progress progress-primary" value="100"
+                                max="100"></progress>
                         </div>
 
                         <div>
                             <p>Hunger <span id="hunger-label">100%</span></p>
-                            <progress id="hunger-bar" class="progress progress-primary" value="100" max="100"></progress>
+                            <progress id="hunger-bar" class="progress progress-primary" value="100"
+                                max="100"></progress>
                         </div>
 
                         <div>
@@ -47,7 +50,7 @@
                         </div>
 
                         <p>Personality: <span id="pet-personality">Quiet</span></p>
-                        <p class="text-primary text-base">MONEY: $</p>
+                        <p class="text-primary text-base">MONEY: <span id="money">100</span></p>
                     </div>
                 </div>
 
@@ -97,16 +100,23 @@
                 <div class="flex flex-col gap-3">
                     <div class="tooltip tooltip-left tooltip-accent" data-tip="hello"><button
                             class="btn btn-sm btn-outline w-full">Play a Mini-Game</button></div>
+
                     <div class="tooltip tooltip-accent" data-tip="hello"><button
                             class="btn btn-outline btn-sm w-full">Skill Training</button></div>
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+
+                    <div class="tooltip tooltip-accent" data-tip="Buy items for your pet!"><button onclick="buy_items_modal.showModal()"
                             class="btn btn-outline btn-sm w-full">Buy Items</button></div>
+
                     <div class="tooltip tooltip-accent" data-tip="hello"><button
                             class="btn btn-outline btn-sm w-full">Enter a Contest</button></div>
+
                     <div class="tooltip tooltip-accent" data-tip="hello"><button
                             class="btn btn-outline btn-sm w-full">Go on an Adventure</button></div>
                 </div>
             </div>
+
+
+
 
             <div class="col-span-7 md:col-span-4 lg:col-span-2 border border-neutral rounded p-7">
                 <h2 class="mb-3 text-lg leading-none">HISTORY</h2>
@@ -166,9 +176,9 @@
                     <label>
                         <input type="radio" class="hidden" value="dog" name="pet-options">
                         <img src="images/dog.jpg" id="dog"
-                        class="w-36 transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
+                            class="w-36 transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
                     </label>
-                    
+
                 </div>
             </div>
 
@@ -182,17 +192,44 @@
                 <p class="text-sm text-center mb-2">choose your pet's personality</p>
 
                 <div class="join">
-                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Lively" value="lively"
-                        required />
-                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Mellow" value="mellow"/>
-                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Playful" value="playful"/>
-                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Quirky" value="quirky"/>
-                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Cautious" value="cautious"/>
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Lively"
+                        value="lively" required />
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Mellow"
+                        value="mellow" />
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options"
+                        aria-label="Playful" value="playful" />
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options" aria-label="Quirky"
+                        value="quirky" />
+                    <input class="join-item btn btn-outline" type="radio" name="personality-options"
+                        aria-label="Cautious" value="cautious" />
                 </div>
             </div>
 
             <button id="begin-game" class="btn">BEGIN</button>
         </form>
+
+
+
+
+
+        
+
+        <dialog id="buy_items_modal" class="modal">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 class="font-bold text-lg">Buy Items</h3>
+                <ul>
+                    <li>apple</li>
+                    <li>kibble</li>
+                    <li>treat</li>
+                    <li>medicine</li>
+                </ul>
+            </div>
+        </dialog>
+
+
 
     </main>
 

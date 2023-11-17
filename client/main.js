@@ -1,4 +1,4 @@
-// RENDER THE GAME ----------------------------
+// RENDER THE GAME ---------------------------------------------
 const main = document.querySelector('#main')
 const choosePetForm = document.querySelector('#choose-pet-form')
 const dashboard = document.querySelector('#dashboard')
@@ -53,7 +53,7 @@ const renderGame = (e) => {
 const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', renderGame)
 
-// PET NEEDS DECAY ----------------------------
+// PET NEEDS DECAY ---------------------------------------------
 const decayPetNeeds = (need) => {
     const needBar = document.querySelector(`#${need}-bar`)
     const needLabel = document.querySelector(`#${need}-label`)
