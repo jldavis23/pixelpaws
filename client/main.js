@@ -1,7 +1,9 @@
+// RENDER THE GAME ----------------------------
 const main = document.querySelector('#main')
 const choosePetForm = document.querySelector('#choose-pet-form')
 const dashboard = document.querySelector('#dashboard')
 dashboard.remove()
+
 
 let myPet = {
     type: '',
@@ -13,6 +15,11 @@ const renderGame = (e) => {
     e.preventDefault()
 
     main.appendChild(dashboard)
+
+    decayPetNeeds('happiness')
+    decayPetNeeds('health')
+    decayPetNeeds('hunger')
+    decayPetNeeds('sleep')
 
     // Assign the selected pet type
     const petOptions = document.getElementsByName('pet-options')
@@ -45,6 +52,21 @@ const renderGame = (e) => {
 
 const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', renderGame)
+
+// PET NEEDS DECAY ----------------------------
+const decayPetNeeds = (need) => {
+    const needBar = document.querySelector(`#${need}-bar`)
+    const needLabel = document.querySelector(`#${need}-label`)
+
+    if (needBar.value > 0) {
+        setTimeout(() => {
+            needBar.value = needBar.value - 1
+            needLabel.textContent = `${needBar.value}%`
+            decayPetNeeds(need)
+        }, 5000)
+    }   
+}
+
 
 
 // for (const child of choosePet.children) {
