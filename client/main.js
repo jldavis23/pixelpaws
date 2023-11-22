@@ -66,7 +66,7 @@ const renderGame = (e) => {
     choosePetForm.remove()
 
 
-
+    //
     const purchaseItemsModal = document.querySelector('#purchase-items-modal')
     const purchaseItemsBtn = document.querySelector('#purchase-items-btn')
     purchaseItemsBtn.addEventListener('click', () => purchaseItemsModal.showModal())
@@ -101,8 +101,17 @@ const decayPetNeed = (need) => {
 
 
 
+const renderInventory = () => {
+    const inventory = document.querySelector('#inventory')
+
+    for (const item in myInventory) {
+        const qtyDisplay = document.querySelector(`#${item}-qty`)
+        qtyDisplay.textContent = myInventory[item]
+    }
+}
 
 
+// PURCHASE ITEMS ---------------------------------------------
 const purchaseAnItem = (item, price) => {
     if (money >= price) {
         // Subtract price from Money, display in the DOM
@@ -110,8 +119,9 @@ const purchaseAnItem = (item, price) => {
         document.querySelector('#money').textContent = money //main money display
         document.querySelector('#purchase-items-money').textContent = money //money display inside modal
 
-        // Add item to inventory object
+        // Add item to inventory object, display in DOM
         myInventory[item]++
+        renderInventory()
     } else {
         console.log('not enough money')
     }

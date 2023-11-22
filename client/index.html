@@ -104,8 +104,8 @@
                     <div class="tooltip tooltip-accent" data-tip="hello"><button id="skill-training-btn"
                             class="btn btn-outline btn-sm w-full">Skill Training</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="Buy items for your pet!"><button id="purchase-items-btn"
-                            class="btn btn-outline btn-sm w-full">Purchase Items</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="Buy items for your pet!"><button
+                            id="purchase-items-btn" class="btn btn-outline btn-sm w-full">Purchase Items</button></div>
 
                     <div class="tooltip tooltip-accent" data-tip="hello"><button id="enter-contest-btn"
                             class="btn btn-outline btn-sm w-full">Enter a Contest</button></div>
@@ -138,18 +138,45 @@
             <div class="col-span-7 md:col-span-4 lg:col-span-3 border border-neutral rounded p-7">
                 <h2 class="mb-3 text-lg leading-none">INVENTORY</h2>
 
-                <ul class="text-sm overflow-y-scroll h-40 md:h-[208px] lg:h-[128px]">
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                    <li class="border-b py-1">lorem ipsum</li>
-                </ul>
+                <div class="overflow-x-auto overflow-y-scroll h-40 md:h-[208px] lg:h-[128px]">
+                    <table class="table table-xs table-pin-rows">
+                        <!-- head -->
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- row 1 -->
+                            <tr>
+                                <td>Apples</td>
+                                <td id="apple-qty">0</td>
+                                <td><button class="feed-btns btn btn-xs">feed</button></td>
+                            </tr>
+                            <!-- row 2 -->
+                            <tr>
+                                <td>Kibble</td>
+                                <td id="kibble-qty">0</td>
+                                <td><button class="feed-btns btn btn-xs">feed</button></td>
+                            </tr>
+                            <!-- row 3 -->
+                            <tr>
+                                <td>Treats</td>
+                                <td id="treat-qty">0</td>
+                                <td><button class="feed-btns btn btn-xs">feed</button></td>
+                            </tr>
+                            <!-- row 4 -->
+                            <tr>
+                                <td>Medicine</td>
+                                <td id="medicine-qty">0</td>
+                                <td><button class="feed-btns btn btn-xs">feed</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
 
             <div class="col-span-7 md:col-span-3 lg:col-span-2 border border-neutral rounded p-7 ">
@@ -215,13 +242,13 @@
 
 
 
-
+        <!-- PURCHASE ITEMS MODAL -->
         <dialog id="purchase-items-modal" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box">
                 <form method="dialog">
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
-                <h3 class="font-bold text-lg">Buy Items</h3>
+                <h3 class="font-bold text-lg">Purchase Items</h3>
 
                 <div class="overflow-x-auto mt-5">
                     <table class="table">
