@@ -98,19 +98,19 @@
                 <h2 class="mb-3 text-lg leading-none">THINGS TO DO</h2>
 
                 <div class="flex flex-col gap-3">
-                    <div class="tooltip tooltip-left tooltip-accent" data-tip="hello"><button
+                    <div class="tooltip tooltip-left tooltip-accent" data-tip="hello"><button id="play-minigame-btn"
                             class="btn btn-sm btn-outline w-full">Play a Mini-Game</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button id="skill-training-btn"
                             class="btn btn-outline btn-sm w-full">Skill Training</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="Buy items for your pet!"><button onclick="buy_items_modal.showModal()"
-                            class="btn btn-outline btn-sm w-full">Buy Items</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="Buy items for your pet!"><button id="purchase-items-btn"
+                            class="btn btn-outline btn-sm w-full">Purchase Items</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button id="enter-contest-btn"
                             class="btn btn-outline btn-sm w-full">Enter a Contest</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="hello"><button
+                    <div class="tooltip tooltip-accent" data-tip="hello"><button id="start-adventure-btn"
                             class="btn btn-outline btn-sm w-full">Go on an Adventure</button></div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
             <div class="col-span-7 md:col-span-4 lg:col-span-2 border border-neutral rounded p-7">
                 <h2 class="mb-3 text-lg leading-none">HISTORY</h2>
 
-                <ul class="text-sm overflow-y-scroll h-40 md:h-[13rem] lg:h-36">
+                <ul class="text-sm overflow-y-scroll h-40 md:h-[208px] lg:h-[128px]">
                     <li class="border-b py-1">lorem ipsum</li>
                     <li class="border-b py-1">lorem ipsum</li>
                     <li class="border-b py-1">lorem ipsum</li>
@@ -135,10 +135,10 @@
                 </ul>
             </div>
 
-            <div class="col-span-7 md:col-span-4 lg:col-span-3 border border-neutral rounded p-7 ">
+            <div class="col-span-7 md:col-span-4 lg:col-span-3 border border-neutral rounded p-7">
                 <h2 class="mb-3 text-lg leading-none">INVENTORY</h2>
 
-                <ul class="text-sm overflow-y-scroll h-40 md:h-[13rem] lg:h-36">
+                <ul class="text-sm overflow-y-scroll h-40 md:h-[208px] lg:h-[128px]">
                     <li class="border-b py-1">lorem ipsum</li>
                     <li class="border-b py-1">lorem ipsum</li>
                     <li class="border-b py-1">lorem ipsum</li>
@@ -156,6 +156,8 @@
                 <h2 class="mb-3 text-lg leading-none">ACHIEVEMENTS</h2>
             </div>
         </section>
+
+
 
         <!-- GAME START FORM -->
         <form id="choose-pet-form" class="flex flex-col justify-center items-center gap-12">
@@ -212,21 +214,55 @@
 
 
 
-        
 
-        <dialog id="buy_items_modal" class="modal">
+
+        <dialog id="purchase-items-modal" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box">
                 <form method="dialog">
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
                 <h3 class="font-bold text-lg">Buy Items</h3>
-                <ul>
-                    <li>apple</li>
-                    <li>kibble</li>
-                    <li>treat</li>
-                    <li>medicine</li>
-                </ul>
-            </div>
+
+                <div class="overflow-x-auto mt-5">
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>Apple</td>
+                                <td>5</td>
+                                <td><button class="buy-btns btn btn-sm" name="apple" value="5">buy</button></td>
+                            </tr>
+
+                            <tr>
+                                <td>Kibble</td>
+                                <td>8</td>
+                                <td><button class="buy-btns btn btn-sm" name="kibble" value="8">buy</button></td>
+                            </tr>
+
+                            <tr>
+                                <td>Treat</td>
+                                <td>4</td>
+                                <td><button class="buy-btns btn btn-sm" name="treat" value="4">buy</button></td>
+                            </tr>
+
+                            <tr>
+                                <td>Medicine</td>
+                                <td>10</td>
+                                <td><button class="buy-btns btn btn-sm" name="medicine" value="10">buy</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="mt-5 font-bold ">MONEY: <span id="purchase-items-money"></span></p>
+                </div>
         </dialog>
 
 
