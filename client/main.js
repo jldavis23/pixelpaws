@@ -4,6 +4,7 @@ const choosePetForm = document.querySelector('#choose-pet-form')
 const dashboard = document.querySelector('#dashboard')
 dashboard.remove()
 
+
 //DATA
 let money = 80
 
@@ -103,11 +104,46 @@ const decayPetNeed = (need) => {
 }
 
 
+// UPDATE THE PET NEED BARS ---------------------------------------------
+const updatePetNeedBars = (need, direction, amount) => {
+    const needBar = document.querySelector(`#${need}-bar`)
+    const needLabel = document.querySelector(`#${need}-label`)
+
+    direction === 'increase' ? (
+        needBar.value = needBar.value + amount
+    ) : (
+        needBar.value = needBar.value - amount
+    )
+    needLabel.textContent = `${needBar.value}%`
+}
+
+
 // FEED PET ---------------------------------------------
 const feedPet = (item) => {
     if (myInventory[item] > 0) {
+        // decrease the item quanitity
         myInventory[item]--
         renderInvQtys()
+
+        // effects on need bars
+        switch (item) {
+            case 'kibble':
+                updatePetNeedBars('hunger', 'increase', 5)
+                break
+            case 'treat':
+                updatePetNeedBars('hunger', 'increase', 3)
+                updatePetNeedBars('happiness', 'increase', 5)
+                updatePetNeedBars('health', 'decrease', 5)
+                break
+            case 'medicine':
+                updatePetNeedBars('health', 'increase', 10)
+                updatePetNeedBars('sleep', 'decrease', 5)
+                break
+            default:
+                console.log('error')
+        }
+
+
     } else {
         console.log(`you have no ${item}`)
     }
