@@ -14,7 +14,6 @@ let myPet = {
 }
 
 let myInventory = {
-    apple: 0,
     kibble: 0,
     treat: 0,
     medicine: 0
@@ -66,7 +65,7 @@ const renderGame = (e) => {
     choosePetForm.remove()
 
 
-    //
+    // Render Purchase Items modal
     const purchaseItemsModal = document.querySelector('#purchase-items-modal')
     const purchaseItemsBtn = document.querySelector('#purchase-items-btn')
     purchaseItemsBtn.addEventListener('click', () => purchaseItemsModal.showModal())
@@ -79,7 +78,11 @@ const renderGame = (e) => {
     })
 
 
-
+    // Add event listeners to the inventory feed buttons
+    const feedBtns = document.querySelectorAll('.feed-btns')
+    feedBtns.forEach(btn => {
+        btn.addEventListener('click', () => feedPet(btn.name))
+    })
 }
 
 const beginGameBtn = document.querySelector('#begin-game')
@@ -100,15 +103,25 @@ const decayPetNeed = (need) => {
 }
 
 
+// FEED PET ---------------------------------------------
+const feedPet = (item) => {
+    if (myInventory[item] > 0) {
+        myInventory[item]--
+        renderInvQtys()
+    } else {
+        console.log(`you have no ${item}`)
+    }
+}
 
-const renderInventory = () => {
-    const inventory = document.querySelector('#inventory')
 
-    for (const item in myInventory) {
+// RENDER INVENTORY QUANTITIES ---------------------------------------------
+const renderInvQtys = () => {
+    for (let item in myInventory) {
         const qtyDisplay = document.querySelector(`#${item}-qty`)
         qtyDisplay.textContent = myInventory[item]
     }
 }
+
 
 
 // PURCHASE ITEMS ---------------------------------------------
@@ -121,15 +134,16 @@ const purchaseAnItem = (item, price) => {
 
         // Add item to inventory object, display in DOM
         myInventory[item]++
-        renderInventory()
+        renderInvQtys()
     } else {
         console.log('not enough money')
     }
-
-
 }
 
 
 // for (const child of choosePet.children) {
 //     child.addEventListener('click', () => renderGame(child.id))
 // }
+
+
+
