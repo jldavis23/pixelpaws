@@ -63,33 +63,33 @@
 
                 <div class="grid grid-cols-1 gap-2 text-xs leading-tight">
                     <div>
-                        <p>Agility <span>1</span></p>
+                        <p>Agility <span id="agility-label">0</span></p>
                         <progress class="progress progress-secondary w-full" value="0" max="10"></progress>
                     </div>
 
                     <div>
-                        <p>Strength <span>1</span></p>
-                        <progress class="progress progress-secondary" value="3" max="10"></progress>
+                        <p>Strength <span id="strength-label">0</span></p>
+                        <progress class="progress progress-secondary" value="0" max="10"></progress>
                     </div>
 
                     <div>
-                        <p>Intelligence <span>1</span></p>
-                        <progress class="progress progress-secondary" value="2" max="10"></progress>
+                        <p>Intelligence <span id="intelligence-label">0</span></p>
+                        <progress class="progress progress-secondary" value="0" max="10"></progress>
                     </div>
 
                     <div>
-                        <p>Agility <span>1</span></p>
+                        <p>Stealth <span id="stealth-label">0</span></p>
                         <progress class="progress progress-secondary w-full" value="0" max="10"></progress>
                     </div>
 
                     <div>
-                        <p>Strength <span>1</span></p>
-                        <progress class="progress progress-secondary" value="6" max="10"></progress>
+                        <p>Endurance <span id="endurance-label">0</span></p>
+                        <progress class="progress progress-secondary" value="0" max="10"></progress>
                     </div>
 
                     <div>
-                        <p>Intelligence <span>1</span></p>
-                        <progress class="progress progress-secondary" value="7" max="10"></progress>
+                        <p>Hunting <span id="hunting-label">0</span></p>
+                        <progress class="progress progress-secondary" value="0" max="10"></progress>
                     </div>
                 </div>
             </div>
@@ -278,6 +278,31 @@
                 </div>
         </dialog>
 
+
+
+        <!-- MINI GAMES MODAL -->
+        <dialog id="minigames-modal" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 id="minigame-title" class="font-bold text-lg">Choose a Mini-Game</h3>
+
+                <div id="game-container">
+                    <div id="choose-minigame" class="grid grid-cols-2 gap-5 h-36 mt-5">
+                        <div id="trivia-btn"
+                            class="bg-primary text-primary-content flex items-center justify-center transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
+                            Animal Trivia
+                        </div>
+                        <div id="chance-btn"
+                            class="bg-secondary text-secondary-content flex items-center justify-center transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
+                            Game of Chance
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </dialog>
 
 
     </main>

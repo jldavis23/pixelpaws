@@ -79,6 +79,15 @@ const renderGame = (e) => {
     })
 
 
+    // Render the Mini-Games Modal
+    const minigameModal = document.querySelector('#minigames-modal')
+    const minigameBtn = document.querySelector('#play-minigame-btn')
+    minigameBtn.addEventListener('click', () => minigameModal.showModal())
+
+    const triviaBtn = document.querySelector('#trivia-btn')
+    triviaBtn.addEventListener('click', startTrivaGame)
+
+
     // Add event listeners to the inventory feed buttons
     const feedBtns = document.querySelectorAll('.feed-btns')
     feedBtns.forEach(btn => {
@@ -88,6 +97,7 @@ const renderGame = (e) => {
 
 const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', renderGame)
+
 
 // PET NEEDS DECAY ---------------------------------------------
 const decayPetNeed = (need) => {
@@ -123,7 +133,7 @@ const feedPet = (item) => {
     if (myInventory[item] > 0) {
         // decrease the item quanitity
         myInventory[item]--
-        renderInvQtys()
+        updateInvQtys()
 
         // effects on need bars
         switch (item) {
@@ -150,8 +160,8 @@ const feedPet = (item) => {
 }
 
 
-// RENDER INVENTORY QUANTITIES ---------------------------------------------
-const renderInvQtys = () => {
+// UPDATE INVENTORY QUANTITIES ---------------------------------------------
+const updateInvQtys = () => {
     for (let item in myInventory) {
         const qtyDisplay = document.querySelector(`#${item}-qty`)
         qtyDisplay.textContent = myInventory[item]
@@ -170,10 +180,65 @@ const purchaseAnItem = (item, price) => {
 
         // Add item to inventory object, display in DOM
         myInventory[item]++
-        renderInvQtys()
+        updateInvQtys()
     } else {
         console.log('not enough money')
     }
+}
+
+
+// TRIVIA MINIGAME ---------------------------------------------
+let questions
+let currentQuestionIndex = 0
+
+const startTrivaGame = async () => {
+    const minigameTitle = document.querySelector('#minigame-title')
+    const gameContainer = document.querySelector('#game-container')
+    const chooseMinigame = document.querySelector('#choose-minigame')
+
+    // Remove the minigame selection
+    minigameTitle.textContent = 'Animal Trivia'
+    gameContainer.removeChild(chooseMinigame)
+
+    // Fetch trivia questions
+    const res = await fetch('https://opentdb.com/api.php?amount=3&category=27&type=multiple')
+    const data = await res.json()
+    questions = await data.results
+
+    // Insert the trivia game in the DOM
+    gameContainer.insertAdjacentHTML(
+        'beforeend',
+        `<div>
+
+            <h4 class="my-4 text-primary"><span class="text-sm">(${currentQuestionIndex + 1}/3)</span> ${questions[currentQuestionIndex].question}</h4>
+
+            <div id="trivia-choices" class="flex flex-col gap-5">
+                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].correct_answer}</button>
+                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].incorrect_answers[0]}</button>
+                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].incorrect_answers[1]}</button>
+                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].incorrect_answers[2]}</button>
+            </div>
+
+            <div id="trivia-feedback" class="opacity-0">
+                <p class="my-4 text-center"></p>
+
+                <div class="flex justify-center">
+                    <button class="btn btn-sm">next</button>
+                </div>
+            </div>
+        </div>`
+    )
+
+    const triviaChoices = document.querySelector('#trivia-choices')
+    for (const btn of triviaChoices.children) {
+        btn.addEventListener('click', () => checkAnswer(btn.textContent))
+    }
+
+    const triviaFeedback = document.querySelector('#trivia-feedback')
+}
+
+const checkAnswer = (answer) => {
+
 }
 
 
