@@ -18,25 +18,20 @@
 
         <div id="game-container">
             <div>
-
-                <h4 class="my-4 text-primary"><span class="text-sm">(0/3)</span> How many colors are in the rainbow?
-                </h4>
-
-                <div class="flex flex-col gap-5">
-                    <button class="btn btn-outline w-full">three</button>
-                    <button class="btn btn-outline w-full">seven</button>
-                    <button class="btn btn-outline w-full">four</button>
-                    <button class="btn btn-outline w-full">eight</button>
+                <h4 id="trivia-question" class="my-4 text-neutral text-center"></h4>
+    
+                <div id="trivia-choices" class="flex flex-col gap-5">
                 </div>
+    
+                <div id="trivia-feedback-section" class="flex flex-col gap-4 my-3 hidden">
+                    <p class="text-center">Your Answer: <span id="your-answer"></span></p>
 
-                <div>
-                    <p class="my-4 text-center">correct!</p>
-
-                    <div class="flex justify-center">
+                    <p id="trivia-feedback-text" class="text-center text-lg">Correct!</p>
+    
+                    <div class="flex justify-center mt-3">
                         <button class="btn btn-sm">next</button>
                     </div>
                 </div>
-
             </div>
         </div>
 

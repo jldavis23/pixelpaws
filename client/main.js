@@ -208,16 +208,18 @@ const renderTriviaGame = async () => {
     // Insert the trivia game in the DOM
     gameContainer.insertAdjacentHTML(
         'beforeend',
-        `<div>
-            <h4 id="trivia-question" class="my-4 text-primary"></h4>
+        ` <div>
+            <h4 id="trivia-question" class="my-4 text-neutral text-center"></h4>
 
             <div id="trivia-choices" class="flex flex-col gap-5">
             </div>
 
-            <div id="trivia-feedback" class="opacity-0">
-                <p class="my-4 text-center"></p>
+            <div id="trivia-feedback-section" class="flex flex-col gap-4 my-3 hidden">
+                <p class="text-center">Your Answer: <span id="your-answer"></span></p>
 
-                <div class="flex justify-center">
+                <p id="trivia-feedback-text" class="text-center text-lg">Correct!</p>
+
+                <div class="flex justify-center mt-3">
                     <button class="btn btn-sm">next</button>
                 </div>
             </div>
@@ -256,16 +258,34 @@ const populateTriviaQuestion = () => {
         choiceBtn.className = 'btn btn-outline w-full'
         choiceBtn.value = choice.isCorrect
         choiceBtn.textContent = choice.text
-        choiceBtn.addEventListener('click', () => checkAnswer(choiceBtn))
+        choiceBtn.addEventListener('click', () => checkAnswer(choice))
         triviaChoices.appendChild(choiceBtn)
     })
 }
 
 const checkAnswer = (choice) => {
-    console.log(choice)
-    const triviaFeedback = document.querySelector('#trivia-feedback')
+    const triviaChoices = document.querySelector('#trivia-choices')
+    const triviaFeedbackSection = document.querySelector('#trivia-feedback-section')
+    const triviaFeedbackText = document.querySelector('#trivia-feedback-text')
+    const yourAnswer = document.querySelector('#your-answer')
 
-    
+    // Inform the user if they got the answer correct
+    yourAnswer.textContent = choice.text
+    if (choice.isCorrect) {
+        triviaFeedbackText.textContent = 'correct!'
+        triviaFeedbackText.classList.add('text-success')
+    } else {
+        triviaFeedbackText.textContent = 'incorrect...'
+        triviaFeedbackText.classList.add('text-error')
+    }
+
+    // Remove the choice buttons
+    while (triviaChoices.firstChild) {
+        triviaChoices.removeChild(triviaChoices.firstChild)
+    }
+
+    // Display the feedback
+    triviaFeedbackSection.classList.toggle('hidden')
 }
 
 
