@@ -85,7 +85,7 @@ const renderGame = (e) => {
     minigameBtn.addEventListener('click', () => minigameModal.showModal())
 
     const triviaBtn = document.querySelector('#trivia-btn')
-    triviaBtn.addEventListener('click', startTrivaGame)
+    triviaBtn.addEventListener('click', renderTriviaGame)
 
 
     // Add event listeners to the inventory feed buttons
@@ -191,7 +191,7 @@ const purchaseAnItem = (item, price) => {
 let questions
 let currentQuestionIndex = 0
 
-const startTrivaGame = async () => {
+const renderTriviaGame = async () => {
     const minigameTitle = document.querySelector('#minigame-title')
     const gameContainer = document.querySelector('#game-container')
     const chooseMinigame = document.querySelector('#choose-minigame')
@@ -209,14 +209,9 @@ const startTrivaGame = async () => {
     gameContainer.insertAdjacentHTML(
         'beforeend',
         `<div>
-
-            <h4 class="my-4 text-primary"><span class="text-sm">(${currentQuestionIndex + 1}/3)</span> ${questions[currentQuestionIndex].question}</h4>
+            <h4 id="trivia-question" class="my-4 text-primary"></h4>
 
             <div id="trivia-choices" class="flex flex-col gap-5">
-                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].correct_answer}</button>
-                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].incorrect_answers[0]}</button>
-                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].incorrect_answers[1]}</button>
-                <button class="btn btn-outline w-full">${questions[currentQuestionIndex].incorrect_answers[2]}</button>
             </div>
 
             <div id="trivia-feedback" class="opacity-0">
@@ -229,16 +224,48 @@ const startTrivaGame = async () => {
         </div>`
     )
 
-    const triviaChoices = document.querySelector('#trivia-choices')
-    for (const btn of triviaChoices.children) {
-        btn.addEventListener('click', () => checkAnswer(btn.textContent))
-    }
-
-    const triviaFeedback = document.querySelector('#trivia-feedback')
+    // populate the first question
+    populateTriviaQuestion()
 }
 
-const checkAnswer = (answer) => {
+const populateTriviaQuestion = () => {
+    // display trivia question
+    const triviaQuestion = document.querySelector('#trivia-question')
+    triviaQuestion.textContent = questions[currentQuestionIndex].question
 
+    // randomize answer choice order
+    let choices = questions[currentQuestionIndex].incorrect_answers.map(choice => {
+        return {text: choice, isCorrect: false}
+    })
+
+    const randomIndex = Math.floor(Math.random() * (choices.length + 1))
+
+    choices.splice(randomIndex, 0, {
+        text: questions[currentQuestionIndex].correct_answer,
+        isCorrect: true,
+    })
+
+    // display trivia choices
+    const triviaChoices = document.querySelector('#trivia-choices')
+    while (triviaChoices.firstChild) {
+        triviaChoices.removeChild(triviaChoices.firstChild)
+    }
+
+    choices.forEach(choice => {
+        const choiceBtn = document.createElement('button')
+        choiceBtn.className = 'btn btn-outline w-full'
+        choiceBtn.value = choice.isCorrect
+        choiceBtn.textContent = choice.text
+        choiceBtn.addEventListener('click', () => checkAnswer(choiceBtn))
+        triviaChoices.appendChild(choiceBtn)
+    })
+}
+
+const checkAnswer = (choice) => {
+    console.log(choice)
+    const triviaFeedback = document.querySelector('#trivia-feedback')
+
+    
 }
 
 
