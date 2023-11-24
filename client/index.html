@@ -185,7 +185,7 @@
 
 
         <!-- GAME START FORM -->
-        <form id="choose-pet-form" class="flex flex-col justify-center items-center gap-12">
+        <form id="choose-pet-form" name="choose-pet-form" class="flex flex-col justify-center items-center gap-12">
             <div class="text-center">
                 <h1 class="font-bold">welcome to pixelpaws</h1>
             </div>
@@ -194,7 +194,7 @@
                 <p class="text-sm text-center mb-2">choose your pet</p>
 
                 <div class="flex flex-col md:flex-row gap-6">
-                    <label class="">
+                    <label>
                         <input type="radio" class="hidden" name="pet-options" value="cat" required>
                         <img src="images/cat.jpg" id="cat"
                             class="w-36 transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1">
@@ -305,6 +305,21 @@
                         </div>
                     </div>
                 </div>
+
+            </div>
+        </dialog>
+
+
+
+        <!-- SKILL TRAINING MODAL -->
+        <dialog id="skill-training-modal" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button id="close-skill-training-btn" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 id="skill-training-title" class="font-bold text-lg">Skill Training</h3>
+
+                
 
             </div>
         </dialog>

@@ -26,17 +26,16 @@ const renderGame = (e) => {
     // Add the dashboard to the DOM
     main.appendChild(dashboard)
 
-    // Start decaying the pet's needs for each category
-    decayPetNeed('happiness')
-    decayPetNeed('health')
-    decayPetNeed('hunger')
-    decayPetNeed('sleep')
-
     // Assign the selected pet type
     const petOptions = document.getElementsByName('pet-options')
     let selectedPet
     for (let i = 0; i < petOptions.length; i++) {
         if (petOptions[i].checked) selectedPet = petOptions[i].value
+    }
+    if (!selectedPet) {
+        dashboard.remove()
+        alert('please choose a pet')
+        return
     }
     myPet.type = selectedPet
     const petPic = document.querySelector('#pet-pic')
@@ -44,6 +43,11 @@ const renderGame = (e) => {
 
     // Assign the inputed name
     const nameInput = document.querySelector('#name-input')
+    if (!nameInput.value) {
+        dashboard.remove()
+        alert('please choose a name for your pet')
+        return
+    }
     myPet.name = nameInput.value
     const petName = document.querySelector('#pet-name')
     petName.textContent = nameInput.value
@@ -54,9 +58,20 @@ const renderGame = (e) => {
     for (let i = 0; i < personalityOptions.length; i++) {
         if (personalityOptions[i].checked) selectedPersonality = personalityOptions[i].value
     }
+    if(!selectedPersonality) {
+        dashboard.remove()
+        alert('please choose a personality for your pet')
+        return
+    }
     myPet.personality = selectedPersonality
     const petPersonality = document.querySelector('#pet-personality')
     petPersonality.textContent = selectedPersonality
+
+    // Start decaying the pet's needs for each category
+    decayPetNeed('happiness')
+    decayPetNeed('health')
+    decayPetNeed('hunger')
+    decayPetNeed('sleep')
 
     // Display the player's money
     const moneyDisplay = document.querySelector('#money')
@@ -65,6 +80,16 @@ const renderGame = (e) => {
     // Remove the beginning Choose Pet Form
     choosePetForm.remove()
 
+    // Render the Mini-Games Modal
+    const minigameModal = document.querySelector('#minigames-modal')
+    const minigameBtn = document.querySelector('#play-minigame-btn')
+    minigameBtn.addEventListener('click', () => minigameModal.showModal())
+
+    const triviaBtn = document.querySelector('#trivia-btn')
+    triviaBtn.addEventListener('click', renderTriviaGame)
+
+    const chanceBtn = document.querySelector('#chance-btn')
+    chanceBtn.addEventListener('click', renderChanceGame)
 
     // Render Purchase Items modal
     const purchaseItemsModal = document.querySelector('#purchase-items-modal')
@@ -78,17 +103,13 @@ const renderGame = (e) => {
         btn.addEventListener('click', () => purchaseAnItem(btn.name, parseInt(btn.value)))
     })
 
+    // Render Skill Training Modal
+    const skillTrainingModal = document.querySelector('#skill-training-modal')
+    const skillTrainingBtn = document.querySelector('#skill-training-btn')
+    skillTrainingBtn.addEventListener('click', () => skillTrainingModal.showModal())
 
-    // Render the Mini-Games Modal
-    const minigameModal = document.querySelector('#minigames-modal')
-    const minigameBtn = document.querySelector('#play-minigame-btn')
-    minigameBtn.addEventListener('click', () => minigameModal.showModal())
 
-    const triviaBtn = document.querySelector('#trivia-btn')
-    triviaBtn.addEventListener('click', renderTriviaGame)
-
-    const chanceBtn = document.querySelector('#chance-btn')
-    chanceBtn.addEventListener('click', renderChanceGame)
+    
 
 
     // Add event listeners to the inventory feed buttons
