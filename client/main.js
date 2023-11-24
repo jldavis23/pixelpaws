@@ -20,6 +20,15 @@ let myInventory = {
     medicine: 0
 }
 
+let petSkills = {
+    agility: 0,
+    strength: 0,
+    intelligence: 0,
+    stealth: 0,
+    endurance: 0,
+    hunting: 0
+}
+
 const renderGame = (e) => {
     e.preventDefault()
 
@@ -58,7 +67,7 @@ const renderGame = (e) => {
     for (let i = 0; i < personalityOptions.length; i++) {
         if (personalityOptions[i].checked) selectedPersonality = personalityOptions[i].value
     }
-    if(!selectedPersonality) {
+    if (!selectedPersonality) {
         dashboard.remove()
         alert('please choose a personality for your pet')
         return
@@ -106,10 +115,22 @@ const renderGame = (e) => {
     // Render Skill Training Modal
     const skillTrainingModal = document.querySelector('#skill-training-modal')
     const skillTrainingBtn = document.querySelector('#skill-training-btn')
-    skillTrainingBtn.addEventListener('click', () => skillTrainingModal.showModal())
+    skillTrainingBtn.addEventListener('click', () => {
+        skillTrainingModal.showModal()
+        renderSkillLevelsInModal()
+    })
+
+    const lowBtns = document.querySelectorAll('.low-intensity-btn')
+    lowBtns.forEach(btn => {
+        btn.addEventListener('click', () => trainSkill(btn.name, btn.value))
+    })
+
+    const highBtns = document.querySelectorAll('.high-intensity-btn')
+    highBtns.forEach(btn => {
+        btn.addEventListener('click', () => trainSkill(btn.name, btn.value))
+    })
 
 
-    
 
 
     // Add event listeners to the inventory feed buttons
@@ -472,7 +493,7 @@ const renderChanceGame = () => {
 const checkChanceNum = (numBtn) => {
     if (parseInt(numBtn.value) === randomChanceNum) {
         //if the player won, run the complete game function
-        completeChanceGame(true) 
+        completeChanceGame(true)
     } else {
         numBtn.classList.add('btn-disabled')
         chanceTries--
@@ -515,6 +536,59 @@ const completeChanceGame = (playerWon) => {
         // reset the trivia game
         resetMiniGame()
     })
+}
+
+// PET SKILLS TRAINING ---------------------------------------------
+
+// Renders the current skill levels in the Skill Training Modal
+const renderSkillLevelsInModal = () => {
+    const skillModalLabels = document.querySelectorAll('.skill-modal-labels')
+    skillModalLabels.forEach(label => {
+        let skill = label.dataset.name
+        label.textContent = petSkills[skill]
+    })
+}
+
+
+//
+const trainSkill = (skill, level) => {
+    switch (skill) {
+        case 'agility':
+            updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
+            updatePetSkillBars('agility', level === 'low' ? 1 : 3)
+            break
+        case 'strength':
+            updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
+            updatePetSkillBars('strength', level === 'low' ? 1 : 3)
+            break
+        case 'intelligence':
+            updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
+            updatePetSkillBars('intelligence', level === 'low' ? 1 : 3)
+            break
+        case 'stealth':
+            updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
+            updatePetSkillBars('stealth', level === 'low' ? 1 : 3)
+            break
+        case 'endurance':
+            updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
+            updatePetSkillBars('endurance', level === 'low' ? 1 : 3)
+            break
+        case 'hunting':
+            updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
+            updatePetSkillBars('hunting', level === 'low' ? 1 : 3)
+            break
+    }
+}
+
+
+const updatePetSkillBars = (skill, amount) => {
+    petSkills[skill] = petSkills[skill] + amount
+
+    const skillBar = document.querySelector(`#${skill}-bar`)
+    const skillLabel = document.querySelector(`#${skill}-label`)
+
+    skillBar.value = petSkills[skill]
+    skillLabel.textContent = petSkills[skill]
 }
 
 
