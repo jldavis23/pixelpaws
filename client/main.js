@@ -218,15 +218,24 @@ const renderTriviaGame = async () => {
     minigameTitle.textContent = 'Animal Trivia'
     gameContainer.removeChild(chooseMinigame)
 
+    //Add a loading animation while trivia questions are fetched
+    gameContainer.insertAdjacentHTML(
+        'beforeend',
+        '<div class="loading"></div>'
+    )
+
     // Fetch trivia questions
     const res = await fetch('https://opentdb.com/api.php?amount=3&category=27&type=multiple')
     const data = await res.json()
     questions = await data.results
 
-    // Insert the trivia game in the DOM
+    // Remove loading circle and insert the trivia game in the DOM
+    while (gameContainer.firstChild) {
+        gameContainer.removeChild(gameContainer.firstChild)
+    }
     gameContainer.insertAdjacentHTML(
         'beforeend',
-        ` <div id="trivia-game">
+        `<div id="trivia-game">
             <p class="text-xs text-center mt-4">(<span id="trivia-num">1</span> of 3)</p>
             <h4 id="trivia-question" class="my-4 text-neutral text-center"></h4>
 
@@ -260,11 +269,11 @@ const populateTriviaQuestion = () => {
 
     // display trivia question
     const triviaQuestion = document.querySelector('#trivia-question')
-    triviaQuestion.textContent = questions[currentQuestionIndex].question
+    triviaQuestion.textContent = htmlReplace(questions[currentQuestionIndex].question)
 
     // randomize answer choice order
     let choices = questions[currentQuestionIndex].incorrect_answers.map(choice => {
-        return {text: choice, isCorrect: false}
+        return { text: choice, isCorrect: false }
     })
 
     const randomIndex = Math.floor(Math.random() * (choices.length + 1))
@@ -284,7 +293,7 @@ const populateTriviaQuestion = () => {
         const choiceBtn = document.createElement('button')
         choiceBtn.className = 'btn btn-outline w-full'
         choiceBtn.value = choice.isCorrect
-        choiceBtn.textContent = choice.text
+        choiceBtn.textContent = htmlReplace(choice.text)
         choiceBtn.addEventListener('click', () => checkAnswer(choice))
         triviaChoices.appendChild(choiceBtn)
     })
@@ -303,7 +312,7 @@ const checkAnswer = (choice) => {
     const yourAnswer = document.querySelector('#your-answer')
 
     // Inform the user if they got the answer correct
-    yourAnswer.textContent = choice.text
+    yourAnswer.textContent = htmlReplace(choice.text)
     if (choice.isCorrect) {
         triviaFeedbackText.textContent = 'correct!'
         triviaFeedbackText.classList.remove('text-error')
@@ -371,7 +380,26 @@ const nextTriviaQuestion = () => {
     }
 }
 
-
+const htmlReplace = (str) => {
+    return str
+        .replaceAll("&quot;", '"')
+        .replaceAll("&#039;", "'")
+        .replaceAll("&rsquo;", "'")
+        .replaceAll("&amp;", "'")
+        .replaceAll("&oacute;", "ó")
+        .replaceAll("&Oacute;", "Ó")
+        .replaceAll("&hellip;", "…")
+        .replaceAll("&ldquo;", '"')
+        .replaceAll("&rdquo;", '"')
+        .replaceAll("&Eacute;", "É")
+        .replaceAll("&eacute;", "é")
+        .replaceAll("&aacute;", "á")
+        .replaceAll("&Aaute;", "Á")
+        .replaceAll("&shy;", "")
+        .replaceAll("&iacute;", "í")
+        .replaceAll("&Iacute;", "Í")
+        .replaceAll("&luml;", "Ï")
+}
 
 
 

@@ -12,35 +12,12 @@
 <body class="font-mono">
     <div class="modal-box">
         <form method="dialog">
-            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button id="close-minigame-btn" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <h3 id="minigame-title" class="font-bold text-lg">Animal Trivia</h3>
+        <h3 id="minigame-title" class="font-bold text-lg">Choose a Mini-Game</h3>
 
         <div id="game-container">
-            <div>
-                <!-- <p class="text-xs text-center mt-4">(<span id="trivia-num">1</span> of 3)</p>
-
-                <h4 id="trivia-question" class="text-neutral">Test question</h4>
-    
-                <div id="trivia-choices" class="flex flex-col gap-5">
-                </div>
-    
-                <div id="trivia-feedback-section" class="flex flex-col gap-4 my-3">
-                    <p class="text-center">Your Answer: <span id="your-answer"></span></p>
-
-                    <p id="trivia-feedback-text" class="text-center text-lg">Correct!</p>
-    
-                    <div class="flex justify-center mt-3">
-                        <button class="btn btn-sm">next</button>
-                    </div>
-                </div> -->
-
-                <h4 class="text-neutral text-center my-4 text-lg">Thanks for playing!</h4>
-                <p class="text-center font-bold">You were awarded $<span id="trivia-money">10</span></p>
-                <div class="flex justify-center mt-3">
-                    <button class="btn btn-sm">next</button>
-                </div>
-            </div>
+           <div class="loading"></div>
         </div>
 
     </div>
