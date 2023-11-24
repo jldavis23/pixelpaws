@@ -201,6 +201,7 @@ const resetMiniGame = () => {
 const closeMinigameBtn = document.querySelector('#close-minigame-btn')
 closeMinigameBtn.addEventListener('click', resetMiniGame)
 
+const minigameModal = document.querySelector('#minigames-modal')
 const minigameTitle = document.querySelector('#minigame-title')
 const gameContainer = document.querySelector('#game-container')
 const chooseMinigame = document.querySelector('#choose-minigame')
@@ -370,7 +371,6 @@ const nextTriviaQuestion = () => {
         const finishTriviaBtn = document.querySelector('#finish-trivia-btn')
         finishTriviaBtn.addEventListener('click', () => {
             // close the modal
-            const minigameModal = document.querySelector('#minigames-modal')
             minigameModal.close()
 
             // award the money and display it
@@ -413,7 +413,7 @@ let randomChanceNum
 const renderChanceGame = () => {
     // reset variables
     chancePointsAwarded = 0
-    chanceTries = 3
+    chanceTries = 5
 
     // Remove the minigame selection
     minigameTitle.textContent = 'Game of Chance'
@@ -450,11 +450,50 @@ const renderChanceGame = () => {
 
 const checkChanceNum = (numBtn) => {
     if (parseInt(numBtn.value) === randomChanceNum) {
-        console.log('yay!')
+        //if the player won, run the complete game function
+        completeChanceGame(true) 
     } else {
         numBtn.classList.add('btn-disabled')
         chanceTries--
+
+        const triesLeft = document.querySelector('#chance-tries-left')
+        triesLeft.textContent = chanceTries
+
+        // Player loses if they run out of tries
+        if (chanceTries < 1) {
+            completeChanceGame(false)
+        }
     }
+}
+
+const completeChanceGame = (playerWon) => {
+    const chanceGame = document.querySelector('#chance-game')
+    chanceGame.remove()
+
+    // Calculate points awarded based on remaining tries
+    chancePointsAwarded = chanceTries * 10
+
+    gameContainer.insertAdjacentHTML(
+        'beforeend',
+        `<h4 class="text-neutral text-center my-4 text-lg">${playerWon ? 'You won!' : 'You lost...'}</h4>
+        <p class="text-center font-bold">You were awarded $<span id="chance-money">${chancePointsAwarded}</span></p>
+        <div class="flex justify-center mt-3">
+            <button id="finish-chance-btn" class="btn btn-sm">finish</button>
+        </div>`
+    )
+
+    const finishChanceBtn = document.querySelector('#finish-chance-btn')
+    finishChanceBtn.addEventListener('click', () => {
+        // close the modal
+        minigameModal.close()
+
+        // award the money and display it
+        money = money + chancePointsAwarded
+        document.querySelector('#money').textContent = money
+
+        // reset the trivia game
+        resetMiniGame()
+    })
 }
 
 
