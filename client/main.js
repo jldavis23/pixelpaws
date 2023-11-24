@@ -87,6 +87,9 @@ const renderGame = (e) => {
     const triviaBtn = document.querySelector('#trivia-btn')
     triviaBtn.addEventListener('click', renderTriviaGame)
 
+    const chanceBtn = document.querySelector('#chance-btn')
+    chanceBtn.addEventListener('click', renderChanceGame)
+
 
     // Add event listeners to the inventory feed buttons
     const feedBtns = document.querySelectorAll('.feed-btns')
@@ -198,15 +201,15 @@ const resetMiniGame = () => {
 const closeMinigameBtn = document.querySelector('#close-minigame-btn')
 closeMinigameBtn.addEventListener('click', resetMiniGame)
 
+const minigameTitle = document.querySelector('#minigame-title')
+const gameContainer = document.querySelector('#game-container')
+const chooseMinigame = document.querySelector('#choose-minigame')
+
 
 // TRIVIA MINIGAME ---------------------------------------------
 let questions
 let currentQuestionIndex = 0
 let triviaPointsAwarded = 0
-
-const minigameTitle = document.querySelector('#minigame-title')
-const gameContainer = document.querySelector('#game-container')
-const chooseMinigame = document.querySelector('#choose-minigame')
 
 const renderTriviaGame = async () => {
     // reset the variables
@@ -400,6 +403,52 @@ const htmlReplace = (str) => {
         .replaceAll("&Iacute;", "Í")
         .replaceAll("&luml;", "Ï")
 }
+
+
+// CHANCE MINIGAME ---------------------------------------------
+let chancePointsAwarded = 0
+let chanceTries = 3
+let randomChanceNum
+
+const renderChanceGame = () => {
+    // reset variables
+    chancePointsAwarded = 0
+    chanceTries = 3
+
+    // Remove the minigame selection
+    minigameTitle.textContent = 'Game of Chance'
+    gameContainer.removeChild(chooseMinigame)
+
+    // Pick a random number between 1 and 10
+    randomChanceNum = Math.floor(Math.random() * 11)
+
+    // Add the chance game to the DOM
+    gameContainer.insertAdjacentHTML(
+        'beforeend',
+        `<div id="chance-game">
+            <p class="my-4">You have three tries to guess the correct number between 1 and 10</p>
+
+            <div id="chance-num-btns" class="join grid grid-cols-5 sm:grid-cols-10 w-full">
+                
+            </div>
+
+            <p class="text-center mt-4 text-neutral">tries left: <span id="chance-tries-left">${chanceTries}</span></p>
+        </div>`
+    )
+
+    // Add the number buttons
+    const chanceNumBtns = document.querySelector('#chance-num-btns')
+    for (let i = 1; i <= 10; i++) {
+        const numBtn = document.createElement('button')
+        numBtn.className = 'btn btn-outline sm:join-item'
+        numBtn.textContent = i
+        numBtn.addEventListener('click', () => console.log(numBtn)) //change later
+        chanceNumBtns.appendChild(numBtn)
+    }
+}
+
+
+
 
 
 

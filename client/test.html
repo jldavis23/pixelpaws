@@ -14,10 +14,27 @@
         <form method="dialog">
             <button id="close-minigame-btn" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <h3 id="minigame-title" class="font-bold text-lg">Choose a Mini-Game</h3>
+        <h3 id="minigame-title" class="font-bold text-lg">Game of Chance</h3>
 
         <div id="game-container">
-           <div class="loading"></div>
+            <div id="chance-game">
+                <p class="my-4">You have three tries to guess the correct number between 1 and 10</p>
+
+                <div id="chance-num-btns" class="join grid grid-cols-5 sm:grid-cols-10 w-full">
+                    <button class="btn btn-outline sm:join-item">1</button>
+                    <button class="btn btn-outline sm:join-item">2</button>
+                    <button class="btn btn-outline sm:join-item">3</button>
+                    <button class="btn btn-outline sm:join-item">4</button>
+                    <button class="btn btn-outline sm:join-item">5</button>
+                    <button class="btn btn-outline sm:join-item">6</button>
+                    <button class="btn btn-outline sm:join-item">7</button>
+                    <button class="btn btn-outline sm:join-item">8</button>
+                    <button class="btn btn-outline sm:join-item">9</button>
+                    <button class="btn btn-outline sm:join-item">10</button>
+                </div>
+
+                <p class="text-center mt-4 text-neutral">tries left: <span id="chance-tries-left">1</span></p>
+            </div>
         </div>
 
     </div>
