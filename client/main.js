@@ -209,6 +209,7 @@ const renderTriviaGame = async () => {
     gameContainer.insertAdjacentHTML(
         'beforeend',
         ` <div>
+            <p class="text-xs text-center mt-4">(<span id="trivia-num">1</span> of 3)</p>
             <h4 id="trivia-question" class="my-4 text-neutral text-center"></h4>
 
             <div id="trivia-choices" class="flex flex-col gap-5">
@@ -220,17 +221,24 @@ const renderTriviaGame = async () => {
                 <p id="trivia-feedback-text" class="text-center text-lg">Correct!</p>
 
                 <div class="flex justify-center mt-3">
-                    <button class="btn btn-sm">next</button>
+                    <button id="next-trivia-btn" class="btn btn-sm">next</button>
                 </div>
             </div>
         </div>`
     )
+
+    const nextTriviaBtn = document.querySelector('#next-trivia-btn')
+    nextTriviaBtn.addEventListener('click', nextTriviaQuestion)
 
     // populate the first question
     populateTriviaQuestion()
 }
 
 const populateTriviaQuestion = () => {
+    // display the question number
+    const triviaNum = document.querySelector('#trivia-num')
+    triviaNum.textContent = currentQuestionIndex + 1
+
     // display trivia question
     const triviaQuestion = document.querySelector('#trivia-question')
     triviaQuestion.textContent = questions[currentQuestionIndex].question
@@ -261,6 +269,12 @@ const populateTriviaQuestion = () => {
         choiceBtn.addEventListener('click', () => checkAnswer(choice))
         triviaChoices.appendChild(choiceBtn)
     })
+
+    // hide feedback section
+    const triviaFeedbackSection = document.querySelector('#trivia-feedback-section')
+    if (!triviaFeedbackSection.classList.contains('hidden')) {
+        triviaFeedbackSection.classList.add('hidden')
+    }
 }
 
 const checkAnswer = (choice) => {
@@ -273,9 +287,11 @@ const checkAnswer = (choice) => {
     yourAnswer.textContent = choice.text
     if (choice.isCorrect) {
         triviaFeedbackText.textContent = 'correct!'
+        triviaFeedbackText.classList.remove('text-error')
         triviaFeedbackText.classList.add('text-success')
     } else {
         triviaFeedbackText.textContent = 'incorrect...'
+        triviaFeedbackText.classList.remove('text-success')
         triviaFeedbackText.classList.add('text-error')
     }
 
@@ -286,6 +302,13 @@ const checkAnswer = (choice) => {
 
     // Display the feedback
     triviaFeedbackSection.classList.toggle('hidden')
+}
+
+const nextTriviaQuestion = () => {
+    if (currentQuestionIndex < 2) {
+        currentQuestionIndex++
+        populateTriviaQuestion()
+    } 
 }
 
 

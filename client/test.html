@@ -18,12 +18,14 @@
 
         <div id="game-container">
             <div>
-                <h4 id="trivia-question" class="my-4 text-neutral text-center"></h4>
+                <p class="text-xs text-center mt-4">(<span id="trivia-num">1</span> of 3)</p>
+
+                <h4 id="trivia-question" class="text-neutral text-center">Test question</h4>
     
                 <div id="trivia-choices" class="flex flex-col gap-5">
                 </div>
     
-                <div id="trivia-feedback-section" class="flex flex-col gap-4 my-3 hidden">
+                <div id="trivia-feedback-section" class="flex flex-col gap-4 my-3">
                     <p class="text-center">Your Answer: <span id="your-answer"></span></p>
 
                     <p id="trivia-feedback-text" class="text-center text-lg">Correct!</p>
