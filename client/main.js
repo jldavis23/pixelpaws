@@ -420,7 +420,7 @@ const renderChanceGame = () => {
     gameContainer.removeChild(chooseMinigame)
 
     // Pick a random number between 1 and 10
-    randomChanceNum = Math.floor(Math.random() * 11)
+    randomChanceNum = Math.floor(Math.random() * 10) + 1
 
     // Add the chance game to the DOM
     gameContainer.insertAdjacentHTML(
@@ -442,11 +442,20 @@ const renderChanceGame = () => {
         const numBtn = document.createElement('button')
         numBtn.className = 'btn btn-outline sm:join-item'
         numBtn.textContent = i
-        numBtn.addEventListener('click', () => console.log(numBtn)) //change later
+        numBtn.value = i
+        numBtn.addEventListener('click', () => checkChanceNum(numBtn))
         chanceNumBtns.appendChild(numBtn)
     }
 }
 
+const checkChanceNum = (numBtn) => {
+    if (parseInt(numBtn.value) === randomChanceNum) {
+        console.log('yay!')
+    } else {
+        numBtn.classList.add('btn-disabled')
+        chanceTries--
+    }
+}
 
 
 
