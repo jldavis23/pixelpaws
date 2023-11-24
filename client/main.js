@@ -169,7 +169,6 @@ const updateInvQtys = () => {
 }
 
 
-
 // PURCHASE ITEMS ---------------------------------------------
 const purchaseAnItem = (item, price) => {
     if (money >= price) {
@@ -187,14 +186,33 @@ const purchaseAnItem = (item, price) => {
 }
 
 
+// MINI-GAMES ---------------------------------------------
+const resetMiniGame = () => {
+    while (gameContainer.firstChild) {
+        gameContainer.removeChild(gameContainer.firstChild)
+    }
+    gameContainer.appendChild(chooseMinigame)
+    minigameTitle.textContent = 'Choose a Mini-Game'
+}
+
+const closeMinigameBtn = document.querySelector('#close-minigame-btn')
+closeMinigameBtn.addEventListener('click', resetMiniGame)
+
+
 // TRIVIA MINIGAME ---------------------------------------------
 let questions
 let currentQuestionIndex = 0
+let triviaPointsAwarded = 0
+
+const minigameTitle = document.querySelector('#minigame-title')
+const gameContainer = document.querySelector('#game-container')
+const chooseMinigame = document.querySelector('#choose-minigame')
 
 const renderTriviaGame = async () => {
-    const minigameTitle = document.querySelector('#minigame-title')
-    const gameContainer = document.querySelector('#game-container')
-    const chooseMinigame = document.querySelector('#choose-minigame')
+    // reset the variables
+    questions = null
+    currentQuestionIndex = 0
+    triviaPointsAwarded = 0
 
     // Remove the minigame selection
     minigameTitle.textContent = 'Animal Trivia'
@@ -208,7 +226,7 @@ const renderTriviaGame = async () => {
     // Insert the trivia game in the DOM
     gameContainer.insertAdjacentHTML(
         'beforeend',
-        ` <div>
+        ` <div id="trivia-game">
             <p class="text-xs text-center mt-4">(<span id="trivia-num">1</span> of 3)</p>
             <h4 id="trivia-question" class="my-4 text-neutral text-center"></h4>
 
@@ -227,6 +245,7 @@ const renderTriviaGame = async () => {
         </div>`
     )
 
+    // add event listener to the next button
     const nextTriviaBtn = document.querySelector('#next-trivia-btn')
     nextTriviaBtn.addEventListener('click', nextTriviaQuestion)
 
@@ -289,6 +308,21 @@ const checkAnswer = (choice) => {
         triviaFeedbackText.textContent = 'correct!'
         triviaFeedbackText.classList.remove('text-error')
         triviaFeedbackText.classList.add('text-success')
+
+        // award points based on difficulty
+        switch (questions[currentQuestionIndex].difficulty) {
+            case 'easy':
+                triviaPointsAwarded = triviaPointsAwarded + 4
+                break
+            case 'medium':
+                triviaPointsAwarded = triviaPointsAwarded + 10
+                break
+            case 'hard':
+                triviaPointsAwarded = triviaPointsAwarded + 16
+                break
+            default:
+                triviaPointsAwarded = triviaPointsAwarded + 3
+        }
     } else {
         triviaFeedbackText.textContent = 'incorrect...'
         triviaFeedbackText.classList.remove('text-success')
@@ -308,8 +342,37 @@ const nextTriviaQuestion = () => {
     if (currentQuestionIndex < 2) {
         currentQuestionIndex++
         populateTriviaQuestion()
-    } 
+    } else {
+        const triviaGame = document.querySelector('#trivia-game')
+        gameContainer.removeChild(triviaGame)
+
+        gameContainer.insertAdjacentHTML(
+            'beforeend',
+            `<h4 class="text-neutral text-center my-4 text-lg">Thanks for playing!</h4>
+            <p class="text-center font-bold">You were awarded $<span id="trivia-money">${triviaPointsAwarded}</span></p>
+            <div class="flex justify-center mt-3">
+                <button id="finish-trivia-btn" class="btn btn-sm">finish</button>
+            </div>`
+        )
+
+        const finishTriviaBtn = document.querySelector('#finish-trivia-btn')
+        finishTriviaBtn.addEventListener('click', () => {
+            // close the modal
+            const minigameModal = document.querySelector('#minigames-modal')
+            minigameModal.close()
+
+            // award the money and display it
+            money = money + triviaPointsAwarded
+            document.querySelector('#money').textContent = money
+
+            // reset the trivia game
+            resetMiniGame()
+        })
+    }
 }
+
+
+
 
 
 // for (const child of choosePet.children) {
