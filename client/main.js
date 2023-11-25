@@ -540,6 +540,17 @@ const completeChanceGame = (playerWon) => {
 
 // PET SKILLS TRAINING ---------------------------------------------
 
+// Update pet skills and cooresponding bars
+const updatePetSkillBars = (skill, amount) => {
+    petSkills[skill] = petSkills[skill] + amount
+
+    const skillBar = document.querySelector(`#${skill}-bar`)
+    const skillLabel = document.querySelector(`#${skill}-label`)
+
+    skillBar.value = petSkills[skill]
+    skillLabel.textContent = petSkills[skill]
+}
+
 // Renders the current skill levels in the Skill Training Modal
 const renderSkillLevelsInModal = () => {
     const skillModalLabels = document.querySelectorAll('.skill-modal-labels')
@@ -549,46 +560,82 @@ const renderSkillLevelsInModal = () => {
     })
 }
 
-
-//
+// Train a pet skill
 const trainSkill = (skill, level) => {
-    switch (skill) {
-        case 'agility':
-            updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-            updatePetSkillBars('agility', level === 'low' ? 1 : 3)
-            break
-        case 'strength':
-            updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-            updatePetSkillBars('strength', level === 'low' ? 1 : 3)
-            break
-        case 'intelligence':
-            updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-            updatePetSkillBars('intelligence', level === 'low' ? 1 : 3)
-            break
-        case 'stealth':
-            updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-            updatePetSkillBars('stealth', level === 'low' ? 1 : 3)
-            break
-        case 'endurance':
-            updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-            updatePetSkillBars('endurance', level === 'low' ? 1 : 3)
-            break
-        case 'hunting':
-            updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-            updatePetSkillBars('hunting', level === 'low' ? 1 : 3)
-            break
-    }
-}
+    const skillTrainingContainer = document.querySelector('#skill-training-container')
+    const chooseSkillTraining = document.querySelector('#choose-skill-training')
+    const closeSkillTrainingBtn = document.querySelector('#close-skill-training-btn')
 
+    // remove the choose skill training section
+    chooseSkillTraining.remove()
 
-const updatePetSkillBars = (skill, amount) => {
-    petSkills[skill] = petSkills[skill] + amount
+    // insert the loading bar into the DOM
+    skillTrainingContainer.insertAdjacentHTML(
+        'beforeend',
+        `<p class="my-4 text-neutral text-center">Training ${skill} skill, ${level} intensity</p>
+        <progress class="progress"></progress>`
+    )
+    closeSkillTrainingBtn.classList.add('hidden')
 
-    const skillBar = document.querySelector(`#${skill}-bar`)
-    const skillLabel = document.querySelector(`#${skill}-label`)
+    // After a few seconds, increase the pet's skills
+    setTimeout(() => {
+        switch (skill) {
+            case 'agility':
+                updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
+                updatePetSkillBars('agility', level === 'low' ? 1 : 3)
+                break
+            case 'strength':
+                updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
+                updatePetSkillBars('strength', level === 'low' ? 1 : 3)
+                break
+            case 'intelligence':
+                updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
+                updatePetSkillBars('intelligence', level === 'low' ? 1 : 3)
+                break
+            case 'stealth':
+                updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
+                updatePetSkillBars('stealth', level === 'low' ? 1 : 3)
+                break
+            case 'endurance':
+                updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
+                updatePetSkillBars('endurance', level === 'low' ? 1 : 3)
+                break
+            case 'hunting':
+                updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
+                updatePetSkillBars('hunting', level === 'low' ? 1 : 3)
+                break
+        }
 
-    skillBar.value = petSkills[skill]
-    skillLabel.textContent = petSkills[skill]
+        // Remove loading bar from DOM
+        while (skillTrainingContainer.firstChild) {
+            skillTrainingContainer.removeChild(skillTrainingContainer.firstChild)
+        }
+
+        // Insert the training results into the DOM
+        skillTrainingContainer.insertAdjacentHTML(
+            'beforeend',
+            `<p class="my-4 text-neutral text-center">${skill} skill increased by ${level === 'low' ? 1 : 3}!</p>
+            <div class="flex justify-center">
+                <button id="finish-skill-training-btn" class="btn btn-sm">finish</button>
+            </div>`
+        )
+        closeSkillTrainingBtn.classList.remove('hidden')
+
+        // When a user clicks "finish", the skill modal closes and resets
+        const finishSkillTrainingBtn = document.querySelector('#finish-skill-training-btn')
+        finishSkillTrainingBtn.addEventListener('click', () => {
+            // close modal
+            const skillTrainingModal = document.querySelector('#skill-training-modal')
+            skillTrainingModal.close()
+
+            // reset the modal
+            while (skillTrainingContainer.firstChild) {
+                skillTrainingContainer.removeChild(skillTrainingContainer.firstChild)
+            }
+            skillTrainingContainer.appendChild(chooseSkillTraining)
+        })
+
+    }, level === 'low' ? 3000 : 5000)
 }
 
 

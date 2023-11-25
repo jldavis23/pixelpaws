@@ -69,7 +69,8 @@
                 <div class="grid grid-cols-1 gap-2 text-xs leading-tight">
                     <div>
                         <p>Agility <span id="agility-label">0</span></p>
-                        <progress id="agility-bar" class="progress progress-secondary w-full" value="0" max="10"></progress>
+                        <progress id="agility-bar" class="progress progress-secondary w-full" value="0"
+                            max="10"></progress>
                     </div>
 
                     <div>
@@ -79,12 +80,14 @@
 
                     <div>
                         <p>Intelligence <span id="intelligence-label">0</span></p>
-                        <progress id="intelligence-bar" class="progress progress-secondary" value="0" max="10"></progress>
+                        <progress id="intelligence-bar" class="progress progress-secondary" value="0"
+                            max="10"></progress>
                     </div>
 
                     <div>
                         <p>Stealth <span id="stealth-label">0</span></p>
-                        <progress id="stealth-bar" class="progress progress-secondary w-full" value="0" max="10"></progress>
+                        <progress id="stealth-bar" class="progress progress-secondary w-full" value="0"
+                            max="10"></progress>
                     </div>
 
                     <div>
@@ -321,52 +324,55 @@
                 </form>
                 <h3 id="skill-training-title" class="font-bold text-lg">Skill Training</h3>
 
-                <div class="overflow-x-auto">
-                    <p class="text-neutral my-4">Send your pet to training to improve their skills! Choose the skill and
-                        intensity below.</p>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Skill</th>
-                                <th>Current Level</th>
-                                <th>Training Intensity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Agility</td>
-                                <td class="skill-modal-labels" data-name="agility">0</td>
-                                <td>
-                                    <button name="agility" value="low" 
-                                        class="low-intensity-btn btn btn-sm">Low</button>
-                                    <button name="agility" value="high"
-                                        class="high-intensity-btn btn btn-sm">High</button>
-                                </td>
-                            </tr>
+                <div id="skill-training-container">
+                    <div id="choose-skill-training" class="overflow-x-auto">
+                        <p class="text-neutral my-4">Send your pet to training to improve their skills! Choose the skill
+                            and
+                            intensity below.</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Current Level</th>
+                                    <th>Training Intensity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Agility</td>
+                                    <td class="skill-modal-labels" data-name="agility">0</td>
+                                    <td>
+                                        <button name="agility" value="low"
+                                            class="low-intensity-btn btn btn-sm">Low</button>
+                                        <button name="agility" value="high"
+                                            class="high-intensity-btn btn btn-sm">High</button>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>Strength</td>
-                                <td class="skill-modal-labels" data-name="strength">0</td>
-                                <td>
-                                    <button name="strength" value="low"
-                                        class="low-intensity-btn btn btn-sm">Low</button>
-                                    <button name="strength" value="high"
-                                        class="high-intensity-btn btn btn-sm">High</button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>Strength</td>
+                                    <td class="skill-modal-labels" data-name="strength">0</td>
+                                    <td>
+                                        <button name="strength" value="low"
+                                            class="low-intensity-btn btn btn-sm">Low</button>
+                                        <button name="strength" value="high"
+                                            class="high-intensity-btn btn btn-sm">High</button>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>Intelligence</td>
-                                <td class="skill-modal-labels" data-name="intelligence">0</td>
-                                <td>
-                                    <button name="intelligence" value="low"
-                                        class="low-intensity-btn btn btn-sm">Low</button>
-                                    <button name="intelligence" value="high"
-                                        class="high-intensity-btn btn btn-sm">High</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <td>Intelligence</td>
+                                    <td class="skill-modal-labels" data-name="intelligence">0</td>
+                                    <td>
+                                        <button name="intelligence" value="low"
+                                            class="low-intensity-btn btn btn-sm">Low</button>
+                                        <button name="intelligence" value="high"
+                                            class="high-intensity-btn btn btn-sm">High</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </dialog>

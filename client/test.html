@@ -17,47 +17,12 @@
         </form>
         <h3 id="skill-training-title" class="font-bold text-lg">Skill Training</h3>
 
-        <div class="overflow-x-auto">
-            <p class="text-neutral my-4">Send your pet to training to improve their skills! Choose the skill and intensity below.</p>
-            <table class="table">
-                
-                <thead>
-                    <tr>
-                        <th>Skill</th>
-                        <th>Current Level</th>
-                        <th>Training Intensity</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr>
-                        <td>Agility</td>
-                        <td>0</td>
-                        <td>
-                            <button name="agility" value="low" class="low-intensity-btn btn btn-sm">Low</button>
-                            <button name="agility" value="high" class="high-intensity-btn btn btn-sm">High</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Strength</td>
-                        <td>0</td>
-                        <td>
-                            <button name="strength" value="low" class="low-intensity-btn btn btn-sm">Low</button>
-                            <button name="strength" value="high" class="high-intensity-btn btn btn-sm">High</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Intelligence</td>
-                        <td>0</td>
-                        <td>
-                            <button name="intelligence" value="low" class="low-intensity-btn btn btn-sm">Low</button>
-                            <button name="intelligence" value="high" class="high-intensity-btn btn btn-sm">High</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div id="skill-training-container">
+            <p class="my-4 text-neutral text-center">Agility skill increased by 3!</p>
+            <div class="flex justify-center">
+                <button id="finish-skill-training-btn" class="btn btn-sm">finish</button>
+            </div>
+            
         </div>
 
 
