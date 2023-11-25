@@ -21,12 +21,12 @@ let myInventory = {
 }
 
 let petSkills = {
-    agility: 9,
-    strength: 10,
-    intelligence: 10,
-    stealth: 10,
-    endurance: 10,
-    hunting: 10
+    agility: 0,
+    strength: 0,
+    intelligence: 0,
+    stealth: 0,
+    endurance: 0,
+    hunting: 0
 }
 
 const renderGame = (e) => {
@@ -86,8 +86,8 @@ const renderGame = (e) => {
     const moneyDisplay = document.querySelector('#money')
     moneyDisplay.textContent = money
 
-    // Remove the beginning Choose Pet Form
-    choosePetForm.remove()
+    // Add a welcome history moment
+    addToHistory(`Congrats! You adopted ${myPet.name}`)
 
     // Render the Mini-Games Modal
     const minigameModal = document.querySelector('#minigames-modal')
@@ -130,7 +130,10 @@ const renderGame = (e) => {
         btn.addEventListener('click', () => trainSkill(btn.name, btn.value))
     })
 
+    // Render Enter Contest Modal
 
+
+    // Render Go on Adventure Modal
 
 
     // Add event listeners to the inventory feed buttons
@@ -138,11 +141,23 @@ const renderGame = (e) => {
     feedBtns.forEach(btn => {
         btn.addEventListener('click', () => feedPet(btn.name))
     })
+
+    // Remove the beginning Choose Pet Form
+    choosePetForm.remove()
 }
 
 const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', renderGame)
 
+// ADD A HISTORY MOMENT ---------------------------------------------
+const addToHistory = (text) => {
+    const historyContainer = document.querySelector('#history-container')
+
+    historyContainer.insertAdjacentHTML(
+        'afterbegin',
+        `<li class="border-b py-2 text-xs">${text}</li>`
+    )
+}
 
 // PET NEEDS DECAY ---------------------------------------------
 const decayPetNeed = (need) => {
@@ -639,6 +654,9 @@ const trainSkill = (skill, level) => {
             </div>`
         )
         closeSkillTrainingBtn.classList.remove('hidden')
+
+        // Add the training results to the History
+        addToHistory(`${myPet.name} increased their ${skill} skill to ${petSkills[skill]}`)
 
         // When a user clicks "finish", the skill modal closes and resets
         const finishSkillTrainingBtn = document.querySelector('#finish-skill-training-btn')
