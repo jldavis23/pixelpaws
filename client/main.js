@@ -21,12 +21,12 @@ let myInventory = {
 }
 
 let petSkills = {
-    agility: 0,
-    strength: 0,
-    intelligence: 0,
-    stealth: 0,
-    endurance: 0,
-    hunting: 0
+    agility: 9,
+    strength: 10,
+    intelligence: 10,
+    stealth: 10,
+    endurance: 10,
+    hunting: 10
 }
 
 const renderGame = (e) => {
@@ -540,9 +540,14 @@ const completeChanceGame = (playerWon) => {
 
 // PET SKILLS TRAINING ---------------------------------------------
 
-// Update pet skills and cooresponding bars
-const updatePetSkillBars = (skill, amount) => {
+// Update pet skills and corresponding bars
+const updatePetSkill = (skill, amount) => {
     petSkills[skill] = petSkills[skill] + amount
+
+    // if a skill goes over 10, set it back to 10
+    if (petSkills[skill] >= 10) {
+        petSkills[skill] = 10
+    }
 
     const skillBar = document.querySelector(`#${skill}-bar`)
     const skillLabel = document.querySelector(`#${skill}-label`)
@@ -558,6 +563,20 @@ const renderSkillLevelsInModal = () => {
         let skill = label.dataset.name
         label.textContent = petSkills[skill]
     })
+
+    // Remove the intensity buttons if the skill is maxed out
+    for (skill in petSkills) {
+        if (petSkills[skill] === 10) {
+            const intensityBtns = document.querySelector(`#${skill}-intensity-btns`)
+            while (intensityBtns.firstChild) {
+                intensityBtns.removeChild(intensityBtns.firstChild)
+            }
+            intensityBtns.insertAdjacentHTML(
+                'beforeend',
+                `skill maxed out`
+            )
+        }
+    }
 }
 
 // Train a pet skill
@@ -582,27 +601,27 @@ const trainSkill = (skill, level) => {
         switch (skill) {
             case 'agility':
                 updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkillBars('agility', level === 'low' ? 1 : 3)
+                updatePetSkill('agility', level === 'low' ? 1 : 3)
                 break
             case 'strength':
                 updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkillBars('strength', level === 'low' ? 1 : 3)
+                updatePetSkill('strength', level === 'low' ? 1 : 3)
                 break
             case 'intelligence':
                 updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkillBars('intelligence', level === 'low' ? 1 : 3)
+                updatePetSkill('intelligence', level === 'low' ? 1 : 3)
                 break
             case 'stealth':
                 updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkillBars('stealth', level === 'low' ? 1 : 3)
+                updatePetSkill('stealth', level === 'low' ? 1 : 3)
                 break
             case 'endurance':
                 updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkillBars('endurance', level === 'low' ? 1 : 3)
+                updatePetSkill('endurance', level === 'low' ? 1 : 3)
                 break
             case 'hunting':
                 updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkillBars('hunting', level === 'low' ? 1 : 3)
+                updatePetSkill('hunting', level === 'low' ? 1 : 3)
                 break
         }
 
@@ -633,6 +652,16 @@ const trainSkill = (skill, level) => {
                 skillTrainingContainer.removeChild(skillTrainingContainer.firstChild)
             }
             skillTrainingContainer.appendChild(chooseSkillTraining)
+
+            // Check for maxed skills
+            if (petSkills[skill] === 10) {
+                console.log(`congratulations! You maxxed out the ${skill} skill!`)
+            }
+
+            // Check for achievements
+            if (Object.values(petSkills).reduce((acc, curr) => acc + curr, 0) === 60) {
+                console.log('congratulations! You maxxed out EVERY SKILL!')
+            }
         })
 
     }, level === 'low' ? 3000 : 5000)
