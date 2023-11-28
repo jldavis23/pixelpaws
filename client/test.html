@@ -15,17 +15,46 @@
             <button id="close-skill-training-btn"
                 class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <h3 id="skill-training-title" class="font-bold text-lg">Skill Training</h3>
+        <h3 id="contest-title" class="font-bold text-lg">Enter a Contest</h3>
 
-        <div id="skill-training-container">
-            <p class="my-4 text-neutral text-center">Agility skill increased by 3!</p>
-            <div class="flex justify-center">
-                <button id="finish-skill-training-btn" class="btn btn-sm">finish</button>
+        <div id="contest-container">
+            <div id="choose-a-contest">
+                <p class="text-neutral text-sm my-4">Choose a contest from the list below. You have a higher chance of winning if your pet has a high level in the listed skills!</p>
+
+                <div class="overflow-x-auto my-4">
+                    <table class="table">
+
+                      <thead>
+                        <tr>
+                          <th>Contest</th>
+                          <th>Skills</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr>
+                          <td>Agility Challenge</td>
+                          <td>Agility, Stealth</td>
+                          <td><button class="enter-contest-btns btn btn-sm" name="agilityChallenge" data-mainSkill="agility" data-otherSkill="stealth">Enter</button></td>
+                        </tr>
+
+                        <tr>
+                          <td>Strength Showdown</td>
+                          <td>Strength, Endurance</td>
+                          <td><button class="enter-contest-btns btn btn-sm" name="strengthShowdown" data-mainSkill="strength" data-otherSkill="endurance">Enter</button></td>
+                        </tr>
+
+                        <tr>
+                          <td>Mind Maze</td>
+                          <td>Intelligence, Stealth</td>
+                          <td><button class="enter-contest-btns btn btn-sm" name="mindMaze" data-mainSkill="intelligence" data-otherSkill="stealth">Enter</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
             </div>
-            
         </div>
-
-
     </div>
 </body>
 

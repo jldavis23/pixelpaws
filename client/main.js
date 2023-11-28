@@ -131,7 +131,14 @@ const renderGame = (e) => {
     })
 
     // Render Enter Contest Modal
+    const enterContestModal = document.querySelector('#enter-contest-modal')
+    const enterContestBtn = document.querySelector('#enter-contest-btn')
+    enterContestBtn.addEventListener('click', () => enterContestModal.showModal())
 
+    const enterBtns = document.querySelectorAll('.enter-contest-btns')
+    enterBtns.forEach(btn => {
+        btn.addEventListener('click', () => enterContest(btn.name, btn.dataset.mainSkill, btn.dataset.otherSkill))
+    })
 
     // Render Go on Adventure Modal
 
@@ -683,6 +690,31 @@ const trainSkill = (skill, level) => {
         })
 
     }, level === 'low' ? 3000 : 5000)
+}
+
+
+// PET CONTESTS ---------------------------------------------
+
+const enterContest = (contest, mainSkill, otherSkill) => {
+    const contestContainer = document.querySelector('#contest-container')
+    const chooseContest = document.querySelector('#choose-a-contest')
+    const closeContestBtn = document.querySelector('#close-contest-btn')
+
+    // remove choose contest
+    chooseContest.remove()
+
+    // insert the loading bar into the DOM
+    contestContainer.insertAdjacentHTML(
+        'beforeend',
+        `<p class="my-4 text-neutral text-center">Entering the ${contest.replace('-', ' ')} contest</p>
+        <progress class="progress"></progress>`
+    )
+    closeContestBtn.classList.add('hidden')
+
+    // After a few seconds, show the contest's results
+    setTimeout(() => {
+        
+    }, 3000)
 }
 
 

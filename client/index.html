@@ -398,6 +398,57 @@
         </dialog>
 
 
+        <!-- ENTER CONTEST MODAL -->
+        <dialog id="enter-contest-modal" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <form method="dialog">
+                    <button id="close-contest-btn"
+                        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <h3 id="contest-title" class="font-bold text-lg">Enter a Contest</h3>
+        
+                <div id="contest-container">
+                    <div id="choose-a-contest">
+                        <p class="text-neutral text-sm my-4">Choose a contest from the list below. You have a higher chance of winning if your pet has a high level in the listed skills!</p>
+        
+                        <div class="overflow-x-auto my-4">
+                            <table class="table">
+        
+                              <thead>
+                                <tr>
+                                  <th>Contest</th>
+                                  <th>Skills</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+        
+                                <tr>
+                                  <td>Agility Challenge</td>
+                                  <td>Agility, Stealth</td>
+                                  <td><button class="enter-contest-btns btn btn-sm" name="agility-challenge" data-main-skill="agility" data-other-skill="stealth">Enter</button></td>
+                                </tr>
+        
+                                <tr>
+                                  <td>Strength Showdown</td>
+                                  <td>Strength, Endurance</td>
+                                  <td><button class="enter-contest-btns btn btn-sm" name="strength-showdown" data-main-skill="strength" data-other-skill="endurance">Enter</button></td>
+                                </tr>
+        
+                                <tr>
+                                  <td>Mind Maze</td>
+                                  <td>Intelligence, Stealth</td>
+                                  <td><button class="enter-contest-btns btn btn-sm" name="mind-maze" data-main-skill="intelligence" data-other-skill="stealth">Enter</button></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </dialog>
+
+
     </main>
 
     <script src="main.js"></script>
