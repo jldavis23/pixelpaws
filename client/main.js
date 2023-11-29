@@ -21,12 +21,12 @@ let myInventory = {
 }
 
 let petSkills = {
-    agility: 0,
-    strength: 0,
-    intelligence: 0,
-    stealth: 0,
-    endurance: 0,
-    hunting: 0
+    agility: 2,
+    strength: 10,
+    intelligence: 5,
+    stealth: 1,
+    endurance: 10,
+    hunting: 4
 }
 
 const renderGame = (e) => {
@@ -83,8 +83,7 @@ const renderGame = (e) => {
     decayPetNeed('sleep')
 
     // Display the player's money
-    const moneyDisplay = document.querySelector('#money')
-    moneyDisplay.textContent = money
+    updateAndRenderMoney()
 
     // Add a welcome history moment
     addToHistory(`Congrats! You adopted ${myPet.name}`)
@@ -155,6 +154,24 @@ const renderGame = (e) => {
 
 const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', renderGame)
+
+// UPDATE AND RENDER MONEY ---------------------------------------------
+const updateAndRenderMoney = (direction, amount) => {
+
+    // fetch money
+
+    if (direction) {
+        if (direction === 'increase') {
+            money = money + amount
+        } else {
+            money = money - amount
+        }
+    } 
+
+    const moneyDisplay = document.querySelector('#money')
+    moneyDisplay.textContent = money
+}
+
 
 // ADD A HISTORY MOMENT ---------------------------------------------
 const addToHistory = (text) => {
@@ -713,6 +730,21 @@ const enterContest = (contest, mainSkill, otherSkill) => {
 
     // After a few seconds, show the contest's results
     setTimeout(() => {
+        // Calculate the percent chance of winning based on pet's skills
+        const main = petSkills[mainSkill] * 7
+        const other = petSkills[otherSkill] * 2
+        let percentChance = (main + other) / 100
+
+        let randomValue = Math.random()
+
+        if (randomValue < percentChance) {
+            console.log('you won!')
+            updateAndRenderMoney('increase', 30)
+        } else {
+            console.log('you lost')
+        }
+
+        closeContestBtn.classList.remove('hidden')
         
     }, 3000)
 }
