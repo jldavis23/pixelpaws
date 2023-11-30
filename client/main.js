@@ -4,18 +4,7 @@ const choosePetForm = document.querySelector('#choose-pet-form')
 const dashboard = document.querySelector('#dashboard')
 dashboard.remove()
 
-
-//DATA
 let myPet
-
-let petSkills = {
-    agility: 2,
-    strength: 10,
-    intelligence: 5,
-    stealth: 1,
-    endurance: 10,
-    hunting: 4
-}
 
 const renderGame = async (e) => {
     e.preventDefault()
@@ -635,33 +624,58 @@ const completeChanceGame = (playerWon) => {
 
 // PET SKILLS TRAINING ---------------------------------------------
 
-// Update pet skills and corresponding bars
-const updatePetSkill = (skill, amount) => {
-    petSkills[skill] = petSkills[skill] + amount
+// Fetch petSkills from server
+const getPetSkills = async () => {
+    try {
+        const res = await fetch ('/api/petskills')
+        return await res.json()
+    } catch (err) {
+        console.error(err)
+    }
+}
 
-    // if a skill goes over 10, set it back to 10
-    if (petSkills[skill] >= 10) {
-        petSkills[skill] = 10
+// Update pet skills and corresponding bar and label
+const updateAndRenderPetSkill = async (skill, amount) => {
+    let skillData
+
+    // Send PUT (update) request to the server for specified skill
+    try {
+        const res = await fetch(`/api/petskills/${skill}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                amount: amount
+            })
+        })
+
+        skillData = await res.json()
+    } catch (err) {
+        console.error(err)
     }
 
+    // Render the update skill in the DOM (bar and label)
     const skillBar = document.querySelector(`#${skill}-bar`)
     const skillLabel = document.querySelector(`#${skill}-label`)
 
-    skillBar.value = petSkills[skill]
-    skillLabel.textContent = petSkills[skill]
+    skillBar.value = skillData[skill]
+    skillLabel.textContent = skillData[skill]
 }
 
 // Renders the current skill levels in the Skill Training Modal
-const renderSkillLevelsInModal = () => {
+const renderSkillLevelsInModal = async () => {
+    let petSkillLevels = await getPetSkills()
+
     const skillModalLabels = document.querySelectorAll('.skill-modal-labels')
     skillModalLabels.forEach(label => {
         let skill = label.dataset.name
-        label.textContent = petSkills[skill]
+        label.textContent = petSkillLevels[skill]
     })
 
     // Remove the intensity buttons if the skill is maxed out
-    for (skill in petSkills) {
-        if (petSkills[skill] === 10) {
+    for (skill in petSkillLevels) {
+        if (petSkillLevels[skill] === 10) {
             const intensityBtns = document.querySelector(`#${skill}-intensity-btns`)
             while (intensityBtns.firstChild) {
                 intensityBtns.removeChild(intensityBtns.firstChild)
@@ -675,10 +689,13 @@ const renderSkillLevelsInModal = () => {
 }
 
 // Train a pet skill
-const trainSkill = (skill, level) => {
+const trainSkill = async (skill, level) => {
     const skillTrainingContainer = document.querySelector('#skill-training-container')
     const chooseSkillTraining = document.querySelector('#choose-skill-training')
     const closeSkillTrainingBtn = document.querySelector('#close-skill-training-btn')
+
+    // Get the current pet skill levels
+    let petSkillLevels = await getPetSkills()
 
     // remove the choose skill training section
     chooseSkillTraining.remove()
@@ -692,33 +709,36 @@ const trainSkill = (skill, level) => {
     closeSkillTrainingBtn.classList.add('hidden')
 
     // After a few seconds, increase the pet's skills
-    setTimeout(() => {
+    setTimeout(async () => {
         switch (skill) {
             case 'agility':
                 updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkill('agility', level === 'low' ? 1 : 3)
+                updateAndRenderPetSkill('agility', level === 'low' ? 1 : 3)
                 break
             case 'strength':
                 updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkill('strength', level === 'low' ? 1 : 3)
+                updateAndRenderPetSkill('strength', level === 'low' ? 1 : 3)
                 break
             case 'intelligence':
                 updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkill('intelligence', level === 'low' ? 1 : 3)
+                updateAndRenderPetSkill('intelligence', level === 'low' ? 1 : 3)
                 break
             case 'stealth':
                 updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkill('stealth', level === 'low' ? 1 : 3)
+                updateAndRenderPetSkill('stealth', level === 'low' ? 1 : 3)
                 break
             case 'endurance':
                 updatePetNeedBars('health', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkill('endurance', level === 'low' ? 1 : 3)
+                updateAndRenderPetSkill('endurance', level === 'low' ? 1 : 3)
                 break
             case 'hunting':
                 updatePetNeedBars('hunger', 'decrease', level === 'low' ? 5 : 10)
-                updatePetSkill('hunting', level === 'low' ? 1 : 3)
+                updateAndRenderPetSkill('hunting', level === 'low' ? 1 : 3)
                 break
         }
+
+        // update the petSkillLevels variable with the new levels
+        petSkillLevels = await getPetSkills() 
 
         // Remove loading bar from DOM
         while (skillTrainingContainer.firstChild) {
@@ -736,7 +756,7 @@ const trainSkill = (skill, level) => {
         closeSkillTrainingBtn.classList.remove('hidden')
 
         // Add the training results to the History
-        addToHistory(`${myPet.name} increased their ${skill} skill to ${petSkills[skill]}`)
+        addToHistory(`${myPet.name} increased their ${skill} skill to ${petSkillLevels[skill]}`)
 
         // When a user clicks "finish", the skill modal closes and resets
         const finishSkillTrainingBtn = document.querySelector('#finish-skill-training-btn')
@@ -752,12 +772,12 @@ const trainSkill = (skill, level) => {
             skillTrainingContainer.appendChild(chooseSkillTraining)
 
             // Check for maxed skills
-            if (petSkills[skill] === 10) {
+            if (petSkillLevels[skill] === 10) {
                 console.log(`congratulations! You maxxed out the ${skill} skill!`)
             }
 
             // Check for achievements
-            if (Object.values(petSkills).reduce((acc, curr) => acc + curr, 0) === 60) {
+            if (Object.values(petSkillLevels).reduce((acc, curr) => acc + curr, 0) === 60) {
                 console.log('congratulations! You maxxed out EVERY SKILL!')
             }
         })
@@ -768,7 +788,7 @@ const trainSkill = (skill, level) => {
 
 // PET CONTESTS ---------------------------------------------
 
-const enterContest = (contest, mainSkill, otherSkill) => {
+const enterContest = async (contest, mainSkill, otherSkill) => {
     const contestContainer = document.querySelector('#contest-container')
     const chooseContest = document.querySelector('#choose-a-contest')
     const closeContestBtn = document.querySelector('#close-contest-btn')
@@ -784,11 +804,14 @@ const enterContest = (contest, mainSkill, otherSkill) => {
     )
     closeContestBtn.classList.add('hidden')
 
+    // Get the current pet skill levels
+    let petSkillLevels = await getPetSkills()
+
     // After a few seconds, show the contest's results
     setTimeout(() => {
         // Calculate the percent chance of winning based on pet's skills
-        const main = petSkills[mainSkill] * 7
-        const other = petSkills[otherSkill] * 2
+        const main = petSkillLevels[mainSkill] * 7
+        const other = petSkillLevels[otherSkill] * 2
         let percentChance = (main + other) / 100
 
         let randomValue = Math.random()

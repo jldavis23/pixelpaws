@@ -21,7 +21,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// DATA
+// DATA ---------------------------------------------
 let money = 80
 
 let myPet = {
@@ -37,13 +37,15 @@ let myInventory = {
 }
 
 let petSkills = {
-    agility: 2,
+    agility: 9,
     strength: 10,
     intelligence: 5,
     stealth: 1,
     endurance: 10,
     hunting: 4
 }
+
+// MY PET ---------------------------------------------
 
 // GET MY PET
 app.get('/api/mypet', (req, res) => {
@@ -59,6 +61,8 @@ app.put('/api/mypet', (req, res) => {
     res.send(myPet)
 })
 
+// MONEY ---------------------------------------------
+
 // GET MONEY
 app.get('/api/money', (req, res) => {
     res.send({money: money})
@@ -70,6 +74,8 @@ app.put('/api/money', (req, res) => {
 
     res.send({money: money})
 })
+
+// INVENTORY ---------------------------------------------
 
 // GET INVENTORY
 app.get('/api/inventory', (req, res) => {
@@ -91,8 +97,30 @@ app.put('/api/inventory/:item', (req, res) => {
     res.send(myInventory)
 })
 
+// PET SKILLS ---------------------------------------------
 
-// APP LISTEN
+// GET PET SKILLS
+app.get('/api/petskills', (req, res) => {
+    res.send(petSkills)
+})
+
+// PUT PET SKILL (update)
+app.put('/api/petskills/:skill', (req, res) => {
+    let skill = req.params.skill
+    let amount = parseInt(req.body.amount)
+
+    petSkills[skill] = petSkills[skill] + amount
+
+    // if a skill goes over 10, set it back to 10
+    if (petSkills[skill] >= 10) {
+        petSkills[skill] = 10
+    }
+
+    res.send({[skill]: petSkills[skill]})
+})
+
+
+// APP LISTEN ---------------------------------------------
 app.listen(port, () => {
     console.log(`pixelpaws app listening on ${port}`)
 })
