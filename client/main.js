@@ -6,7 +6,7 @@ dashboard.remove()
 
 
 //DATA
-let money = 80
+//let money = 80
 
 let myPet = {
     type: '',
@@ -104,8 +104,6 @@ const renderGame = (e) => {
     const purchaseItemsBtn = document.querySelector('#purchase-items-btn')
     purchaseItemsBtn.addEventListener('click', () => purchaseItemsModal.showModal())
 
-    document.querySelector('#purchase-items-money').textContent = money
-
     const buyBtns = document.querySelectorAll('.buy-btns')
     buyBtns.forEach(btn => {
         btn.addEventListener('click', () => purchaseAnItem(btn.name, parseInt(btn.value)))
@@ -156,19 +154,31 @@ const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', renderGame)
 
 // UPDATE AND RENDER MONEY ---------------------------------------------
-const updateAndRenderMoney = (direction, amount) => {
+const updateAndRenderMoney = async (direction, amount) => {
 
-    // fetch money
+    // fetch money from api
+    const res = await fetch('/api/money')
+    const moneyObj = await res.json()
+    let money = moneyObj.money
 
     if (direction) {
-        if (direction === 'increase') {
-            money = money + amount
-        } else {
-            money = money - amount
-        }
+        // send POST request to update money
+        const response = await fetch('/api/money', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                money: direction === 'increase' ? money + amount : money - amount
+            })
+        })
+        const data = await response.json()
+
+        money = data.money
     } 
 
-    document.querySelector('#money').textContent = money //main money display
+    // Rerender money in the DOM
+    document.querySelector('#money-display').textContent = money //main money display
     document.querySelector('#purchase-items-money').textContent = money //money display inside modal
 }
 
@@ -254,7 +264,18 @@ const updateInvQtys = () => {
 
 
 // PURCHASE ITEMS ---------------------------------------------
-const purchaseAnItem = (item, price) => {
+const purchaseAnItem = async (item, price) => {
+    let money
+
+    // fetch money from api
+    try {
+        const res = await fetch ('/api/money')
+        const data = await res.json()
+        money = data.money
+    } catch (err) {
+        console.error(err)
+    }
+
     if (money >= price) {
         // Subtract price from Money, display in the DOM
         updateAndRenderMoney('decrease', price)
