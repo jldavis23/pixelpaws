@@ -71,6 +71,26 @@ app.put('/api/money', (req, res) => {
     res.send({money: money})
 })
 
+// GET INVENTORY
+app.get('/api/inventory', (req, res) => {
+    res.send(myInventory)
+})
+
+// PUT INVENTORY (update)
+app.put('/api/inventory/:item', (req, res) => {
+    let item = req.params.item
+    let direction = req.body.direction
+    let amount = parseInt(req.body.amount)
+
+    if (direction === 'increase') {
+        myInventory[item] = myInventory[item] + amount
+    } else {
+        myInventory[item] = myInventory[item] - amount
+    }
+
+    res.send(myInventory)
+})
+
 
 // APP LISTEN
 app.listen(port, () => {

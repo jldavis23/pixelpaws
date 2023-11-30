@@ -6,14 +6,7 @@ dashboard.remove()
 
 
 //DATA
-
 let myPet
-
-let myInventory = {
-    kibble: 0,
-    treat: 0,
-    medicine: 0
-}
 
 let petSkills = {
     agility: 2,
@@ -240,11 +233,20 @@ const updatePetNeedBars = (need, direction, amount) => {
 
 
 // FEED PET ---------------------------------------------
-const feedPet = (item) => {
-    if (myInventory[item] > 0) {
+const feedPet = async (item) => {
+    let inventory
+
+    // Fetch the inventory data from server
+    try {
+        const res = await fetch('/api/inventory')
+        inventory = await res.json()
+    } catch (err) {
+        console.error(err)
+    }
+
+    if (inventory[item] > 0) {
         // decrease the item quanitity
-        myInventory[item]--
-        updateInvQtys()
+        updateInvQtys(item, 'decrease', 1)
 
         // effects on need bars
         switch (item) {
@@ -272,10 +274,31 @@ const feedPet = (item) => {
 
 
 // UPDATE INVENTORY QUANTITIES ---------------------------------------------
-const updateInvQtys = () => {
-    for (let item in myInventory) {
-        const qtyDisplay = document.querySelector(`#${item}-qty`)
-        qtyDisplay.textContent = myInventory[item]
+const updateInvQtys = async (item, direction, amount) => {
+    let inventory
+
+    // Send PUT (update) request to server
+    try {
+        const res = await fetch(`/api/inventory/${item}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                direction: direction,
+                amount: amount
+            })
+        })
+
+        inventory = await res.json()
+    } catch (err) {
+        console.error(err)
+    }
+
+    // Render the inventory qtys in DOM
+    for (let i in inventory) {
+        const qtyDisplay = document.querySelector(`#${i}-qty`)
+        qtyDisplay.textContent = inventory[i]
     }
 }
 
@@ -298,8 +321,7 @@ const purchaseAnItem = async (item, price) => {
         updateAndRenderMoney('decrease', price)
 
         // Add item to inventory object, display in DOM
-        myInventory[item]++
-        updateInvQtys()
+        updateInvQtys(item, 'increase', 1)
     } else {
         console.log('not enough money')
     }
