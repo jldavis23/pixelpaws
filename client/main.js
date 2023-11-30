@@ -6,13 +6,8 @@ dashboard.remove()
 
 
 //DATA
-//let money = 80
 
-let myPet = {
-    type: '',
-    name: '',
-    personality: '',
-}
+let myPet
 
 let myInventory = {
     kibble: 0,
@@ -29,11 +24,18 @@ let petSkills = {
     hunting: 4
 }
 
-const renderGame = (e) => {
+const renderGame = async (e) => {
     e.preventDefault()
 
     // Add the dashboard to the DOM
     main.appendChild(dashboard)
+
+    // Create object that will be sent to the server
+    let petData = {
+        type: '',
+        name: '',
+        personality: ''
+    }
 
     // Assign the selected pet type
     const petOptions = document.getElementsByName('pet-options')
@@ -46,7 +48,7 @@ const renderGame = (e) => {
         alert('please choose a pet')
         return
     }
-    myPet.type = selectedPet
+    petData.type = selectedPet
     const petPic = document.querySelector('#pet-pic')
     petPic.src = `images/${selectedPet}.jpg`
 
@@ -57,7 +59,7 @@ const renderGame = (e) => {
         alert('please choose a name for your pet')
         return
     }
-    myPet.name = nameInput.value
+    petData.name = nameInput.value
     const petName = document.querySelector('#pet-name')
     petName.textContent = nameInput.value
 
@@ -72,9 +74,24 @@ const renderGame = (e) => {
         alert('please choose a personality for your pet')
         return
     }
-    myPet.personality = selectedPersonality
+    petData.personality = selectedPersonality
     const petPersonality = document.querySelector('#pet-personality')
     petPersonality.textContent = selectedPersonality
+
+    // Send the petData to server to update myPet
+    try {
+        const res = await fetch('/api/mypet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(petData)
+        })
+
+        myPet = await res.json()
+    } catch (err) {
+        console.error(err)
+    }
 
     // Start decaying the pet's needs for each category
     decayPetNeed('happiness')
@@ -86,7 +103,7 @@ const renderGame = (e) => {
     updateAndRenderMoney()
 
     // Add a welcome history moment
-    addToHistory(`Congrats! You adopted ${myPet.name}`)
+    addToHistory(`Congrats! You adopted ${petData.name}`)
 
     // Render the Mini-Games Modal
     const minigameModal = document.querySelector('#minigames-modal')
