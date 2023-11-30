@@ -168,8 +168,8 @@ const updateAndRenderMoney = (direction, amount) => {
         }
     } 
 
-    const moneyDisplay = document.querySelector('#money')
-    moneyDisplay.textContent = money
+    document.querySelector('#money').textContent = money //main money display
+    document.querySelector('#purchase-items-money').textContent = money //money display inside modal
 }
 
 
@@ -257,9 +257,7 @@ const updateInvQtys = () => {
 const purchaseAnItem = (item, price) => {
     if (money >= price) {
         // Subtract price from Money, display in the DOM
-        money = money - price
-        document.querySelector('#money').textContent = money //main money display
-        document.querySelector('#purchase-items-money').textContent = money //money display inside modal
+        updateAndRenderMoney('decrease', price)
 
         // Add item to inventory object, display in DOM
         myInventory[item]++
@@ -455,8 +453,7 @@ const nextTriviaQuestion = () => {
             minigameModal.close()
 
             // award the money and display it
-            money = money + triviaPointsAwarded
-            document.querySelector('#money').textContent = money
+            updateAndRenderMoney('increase', triviaPointsAwarded)
 
             // reset the trivia game
             resetMiniGame()
@@ -569,8 +566,7 @@ const completeChanceGame = (playerWon) => {
         minigameModal.close()
 
         // award the money and display it
-        money = money + chancePointsAwarded
-        document.querySelector('#money').textContent = money
+        updateAndRenderMoney('increase', chancePointsAwarded)
 
         // reset the trivia game
         resetMiniGame()
