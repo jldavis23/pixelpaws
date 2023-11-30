@@ -50,8 +50,8 @@ app.get('/api/mypet', (req, res) => {
     res.send(myPet)
 })
 
-// POST MY PET
-app.post('/api/mypet', (req, res) => {
+// PUT MY PET (update)
+app.put('/api/mypet', (req, res) => {
     myPet.type = req.body.type
     myPet.name = req.body.name
     myPet.personality = req.body.personality
@@ -64,8 +64,8 @@ app.get('/api/money', (req, res) => {
     res.send({money: money})
 })
 
-// POST MONEY
-app.post('/api/money', (req, res) => {
+// PUT MONEY (update)
+app.put('/api/money', (req, res) => {
     money = req.body.money
 
     res.send({money: money})

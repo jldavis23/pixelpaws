@@ -81,7 +81,7 @@ const renderGame = async (e) => {
     // Send the petData to server to update myPet
     try {
         const res = await fetch('/api/mypet', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -179,9 +179,9 @@ const updateAndRenderMoney = async (direction, amount) => {
     let money = moneyObj.money
 
     if (direction) {
-        // send POST request to update money
+        // send PUT request to update money
         const response = await fetch('/api/money', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
