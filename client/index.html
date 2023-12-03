@@ -101,20 +101,21 @@
                 <h2 class="mb-3 text-lg leading-none">THINGS TO DO</h2>
 
                 <div class="flex flex-col gap-3">
-                    <div class="tooltip tooltip-accent" data-tip="Earn money by playing a mini-game"><button id="play-minigame-btn"
-                            class="btn btn-sm btn-outline w-full">Play a Mini-Game</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="Earn money by playing a mini-game"><button
+                            id="play-minigame-btn" class="btn btn-sm btn-outline w-full">Play a Mini-Game</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="Increase your pet's skills"><button id="skill-training-btn"
-                            class="btn btn-outline btn-sm w-full">Skill Training</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="Increase your pet's skills"><button
+                            id="skill-training-btn" class="btn btn-outline btn-sm w-full">Skill Training</button></div>
 
                     <div class="tooltip tooltip-accent" data-tip="Buy items for your pet"><button
                             id="purchase-items-btn" class="btn btn-outline btn-sm w-full">Purchase Items</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="Enter a skill contest to earn money"><button id="enter-contest-btn"
-                            class="btn btn-outline btn-sm w-full">Enter a Contest</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="Enter a skill contest to earn money"><button
+                            id="enter-contest-btn" class="btn btn-outline btn-sm w-full">Enter a Contest</button></div>
 
-                    <div class="tooltip tooltip-accent" data-tip="Go on an adventure with your pet"><button id="start-adventure-btn"
-                            class="btn btn-outline btn-sm w-full">Go on an Adventure</button></div>
+                    <div class="tooltip tooltip-accent" data-tip="Go on an adventure with your pet"><button
+                            id="start-adventure-btn" class="btn btn-outline btn-sm w-full">Go on an Adventure</button>
+                    </div>
                 </div>
             </div>
 
@@ -315,7 +316,8 @@
                         <p class="text-neutral my-4">Send your pet to training to improve their skills! Choose the skill
                             and
                             intensity below.</p>
-                        <p class="my-4 text-xs">Low intensity trains your pet slowly, high intensity speeds up skill development while also decreasing your pet's needs faster</p>
+                        <p class="my-4 text-xs">Low intensity trains your pet slowly, high intensity speeds up skill
+                            development while also decreasing your pet's needs faster</p>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -406,43 +408,72 @@
                         class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
                 <h3 id="contest-title" class="font-bold text-lg">Enter a Contest</h3>
-        
+
                 <div id="contest-container">
                     <div id="choose-a-contest">
-                        <p class="text-neutral text-sm my-4">Choose a contest from the list below. You have a higher chance of winning if your pet has a high level in the listed skills!</p>
-        
+                        <p class="text-neutral text-sm my-4">Choose a contest from the list below. You have a higher
+                            chance of winning if your pet has a high level in the listed skills!</p>
+
                         <div class="overflow-x-auto my-4">
                             <table class="table">
-        
-                              <thead>
-                                <tr>
-                                  <th>Contest</th>
-                                  <th>Skills</th>
-                                  <th></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-        
-                                <tr>
-                                  <td>Agility Challenge</td>
-                                  <td>Agility, Stealth</td>
-                                  <td><button class="enter-contest-btns btn btn-sm" name="agility-challenge" data-main-skill="agility" data-other-skill="stealth">Enter</button></td>
-                                </tr>
-        
-                                <tr>
-                                  <td>Strength Showdown</td>
-                                  <td>Strength, Endurance</td>
-                                  <td><button class="enter-contest-btns btn btn-sm" name="strength-showdown" data-main-skill="strength" data-other-skill="endurance">Enter</button></td>
-                                </tr>
-        
-                                <tr>
-                                  <td>Mind Maze</td>
-                                  <td>Intelligence, Stealth</td>
-                                  <td><button class="enter-contest-btns btn btn-sm" name="mind-maze" data-main-skill="intelligence" data-other-skill="stealth">Enter</button></td>
-                                </tr>
-                              </tbody>
+
+                                <thead>
+                                    <tr>
+                                        <th>Contest</th>
+                                        <th>Skills</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td>Agility Challenge</td>
+                                        <td>Agility, Stealth</td>
+                                        <td><button class="enter-contest-btns btn btn-sm" name="agility-challenge"
+                                                data-main-skill="agility" data-other-skill="stealth">Enter</button></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Strength Showdown</td>
+                                        <td>Strength, Endurance</td>
+                                        <td><button class="enter-contest-btns btn btn-sm" name="strength-showdown"
+                                                data-main-skill="strength" data-other-skill="endurance">Enter</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Mind Maze</td>
+                                        <td>Intelligence, Stealth</td>
+                                        <td><button class="enter-contest-btns btn btn-sm" name="mind-maze"
+                                                data-main-skill="intelligence" data-other-skill="stealth">Enter</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Stealthy Infiltration</td>
+                                        <td>Stealth, Agility</td>
+                                        <td><button class="enter-contest-btns btn btn-sm" name="stealthy-infiltration"
+                                                data-main-skill="stealth" data-other-skill="agility">Enter</button></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Endurance Marathon</td>
+                                        <td>Endurance, Strength</td>
+                                        <td><button class="enter-contest-btns btn btn-sm" name="endurance-marathon"
+                                                data-main-skill="endurance" data-other-skill="strength">Enter</button></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Hunting Expedition</td>
+                                        <td>Hunting, Intelligence</td>
+                                        <td><button class="enter-contest-btns btn btn-sm" name="hunting-expedition"
+                                                data-main-skill="hunting" data-other-skill="intelligence">Enter</button></td>
+                                    </tr>
+
+
+                                </tbody>
                             </table>
-                          </div>
+                        </div>
                     </div>
                 </div>
             </div>

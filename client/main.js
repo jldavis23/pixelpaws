@@ -815,15 +815,51 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
         let percentChance = (main + other) / 100
 
         let randomValue = Math.random()
+        let playerWon
 
         if (randomValue < percentChance) {
             console.log('you won!')
+            playerWon = true
             updateAndRenderMoney('increase', 30)
         } else {
             console.log('you lost')
+            playerWon = false
         }
 
+        // Remove loading bar from DOM
+        while (contestContainer.firstChild) {
+            contestContainer.removeChild(contestContainer.firstChild)
+        }
+
+        // Insert the training results into the DOM
+        contestContainer.insertAdjacentHTML(
+            'beforeend',
+            `<p class="my-4 text-neutral text-center">${playerWon ? 'Congratulations, you won! You recieved $30' : 'Sorry, you lost. Try again later'}</p>
+            <div class="flex justify-center">
+                <button id="finish-contest-btn" class="btn btn-sm">finish</button>
+            </div>`
+        )
         closeContestBtn.classList.remove('hidden')
+
+        // Add the contest results to the History
+        addToHistory(`${myPet.name} ${playerWon ? 'won' : 'lost'} the ${contest.replace('-', ' ')} contest`)
+
+        // When a user clicks "finish", the skill modal closes and resets
+        const finishContestBtn = document.querySelector('#finish-contest-btn')
+        finishContestBtn.addEventListener('click', () => {
+            // close modal
+            const enterContestModal = document.querySelector('#enter-contest-modal')
+            enterContestModal.close()
+
+            // reset the modal
+            while (contestContainer.firstChild) {
+                contestContainer.removeChild(contestContainer.firstChild)
+            }
+            contestContainer.appendChild(chooseContest)
+
+            // Check for achievements
+            console.log('checking for achievements')
+        })
         
     }, 3000)
 }

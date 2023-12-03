@@ -37,12 +37,12 @@ let myInventory = {
 }
 
 let petSkills = {
-    agility: 9,
-    strength: 10,
-    intelligence: 5,
-    stealth: 1,
-    endurance: 10,
-    hunting: 4
+    agility: 0,
+    strength: 0,
+    intelligence: 0,
+    stealth: 0,
+    endurance: 0,
+    hunting: 0
 }
 
 // MY PET ---------------------------------------------
