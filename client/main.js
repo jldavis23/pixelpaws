@@ -87,6 +87,23 @@ const renderGame = async (e) => {
     // Add a welcome history moment
     addToHistory(`Congrats! You adopted ${petData.name}`)
 
+    // Add clicking on pet interaction
+    let lastClickTime = 0
+    petPic.addEventListener('click', () => {
+        const currentTime = new Date().getTime();
+
+        // Check if the cooldown period has elapsed
+        if (currentTime - lastClickTime > 5000) {
+            updatePetNeedBars('happiness', 'increase', 1)
+            sendToastMsg(`${myPet.name} loves the attention!`)
+
+            console.log('changing pet pic to hearts')
+
+            // Update the last click time
+            lastClickTime = currentTime;
+        }
+    })
+
     // Render the Mini-Games Modal
     const minigameModal = document.querySelector('#minigames-modal')
     const minigameBtn = document.querySelector('#play-minigame-btn')
@@ -190,6 +207,23 @@ const addToHistory = (text) => {
         'afterbegin',
         `<li class="border-b py-2 text-xs">${text}</li>`
     )
+}
+
+// SEND TOAST MESSAGE ---------------------------------------------
+const sendToastMsg = (text) => {
+    const toast = document.querySelector('#toast')
+    const toastText = document.querySelector('#toast-text')
+
+    // set toast message text
+    toastText.textContent = text
+
+    // remove the hidden class from toast
+    toast.classList.remove('hidden')
+
+    // after 5 seconds, hide toast again
+    setTimeout(() => {
+        toast.classList.add('hidden')
+    }, 5000)
 }
 
 // PET NEEDS DECAY ---------------------------------------------
