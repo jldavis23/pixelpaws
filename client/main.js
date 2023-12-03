@@ -174,7 +174,7 @@ const updateAndRenderMoney = async (direction, amount) => {
         const data = await response.json()
 
         money = data.money
-    } 
+    }
 
     // Rerender money in the DOM
     document.querySelector('#money-display').textContent = money //main money display
@@ -197,13 +197,21 @@ const decayPetNeed = (need) => {
     const needBar = document.querySelector(`#${need}-bar`)
     const needLabel = document.querySelector(`#${need}-label`)
 
-    if (needBar.value > 0) {
-        setTimeout(() => {
-            needBar.value = needBar.value - 1
-            needLabel.textContent = `${needBar.value}%`
-            decayPetNeed(need)
-        }, 5000)
+    if (document.body.contains(dashboard)) {
+        if (needBar.value > 0) {
+            setTimeout(() => {
+                needBar.value = needBar.value - 1
+                needLabel.textContent = `${needBar.value}%`
+                decayPetNeed(need)
+            }, 5000)
+        } else if (need === 'health') {
+            gameOver()
+            return
+        }
+    } else {
+        return
     }
+
 }
 
 
@@ -218,6 +226,23 @@ const updatePetNeedBars = (need, direction, amount) => {
         needBar.value = needBar.value - amount
     )
     needLabel.textContent = `${needBar.value}%`
+}
+
+// GAME OVER ---------------------------------------------
+const gameOver = () => {
+    dashboard.remove()
+
+    main.insertAdjacentHTML(
+        'beforeend',
+        `<div class="hero min-h-screen">
+            <div class="hero-content text-center">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">GAME OVER</h1>
+                <p class="py-6">${myPet.name} died</p>
+            </div>
+            </div>
+        </div>`
+    )
 }
 
 
@@ -298,7 +323,7 @@ const purchaseAnItem = async (item, price) => {
 
     // fetch money from api
     try {
-        const res = await fetch ('/api/money')
+        const res = await fetch('/api/money')
         const data = await res.json()
         money = data.money
     } catch (err) {
@@ -627,7 +652,7 @@ const completeChanceGame = (playerWon) => {
 // Fetch petSkills from server
 const getPetSkills = async () => {
     try {
-        const res = await fetch ('/api/petskills')
+        const res = await fetch('/api/petskills')
         return await res.json()
     } catch (err) {
         console.error(err)
@@ -738,7 +763,7 @@ const trainSkill = async (skill, level) => {
         }
 
         // update the petSkillLevels variable with the new levels
-        petSkillLevels = await getPetSkills() 
+        petSkillLevels = await getPetSkills()
 
         // Remove loading bar from DOM
         while (skillTrainingContainer.firstChild) {
@@ -860,7 +885,7 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
             // Check for achievements
             console.log('checking for achievements')
         })
-        
+
     }, 3000)
 }
 
