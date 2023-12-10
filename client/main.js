@@ -913,11 +913,11 @@ const trainSkill = async (skill, level) => {
 // PET CONTESTS ---------------------------------------------
 let contestsWon = {
     'agility-challenge': false,
-    'strengthShowdown': true,
-    'mindMaze': true,
-    'stealthy-infiltration': true,
-    'endurance-marathon': true,
-    'hunting-expedition': true
+    'strengthShowdown': false,
+    'mindMaze': false,
+    'stealthy-infiltration': false,
+    'endurance-marathon': false,
+    'hunting-expedition': false
 }
 
 const enterContest = async (contest, mainSkill, otherSkill) => {
@@ -977,7 +977,7 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
 
         // When a user clicks "finish", the skill modal closes and resets
         const finishContestBtn = document.querySelector('#finish-contest-btn')
-        finishContestBtn.addEventListener('click', () => {
+        finishContestBtn.addEventListener('click', async () => {
             // close modal
             const enterContestModal = document.querySelector('#enter-contest-modal')
             enterContestModal.close()
@@ -990,9 +990,14 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
 
             // Check for achievements
             if (Object.values(contestsWon).every(contest => contest === true)) {
-                awardAchievement('contest-conqueror')
-                sendToastMsg('Congrats! You earned the Contest Conqueror achievement!')
-                addToHistory(`${myPet.name} earned the Contest Conqueror achievement!`)
+                const res = await fetch('/api/achievement/contest-conqueror')
+                const achievement = await res.json()
+
+                if (!achievement.earned) {
+                    awardAchievement('contest-conqueror')
+                    sendToastMsg('Congrats! You earned the Contest Conqueror achievement!')
+                    addToHistory(`${myPet.name} earned the Contest Conqueror achievement!`)
+                }
             }
         })
 
