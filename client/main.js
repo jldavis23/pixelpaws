@@ -224,7 +224,6 @@ const updateAndRenderMoney = async (direction, amount) => {
     document.querySelector('#purchase-items-money').textContent = money //money display inside modal
 
     // Check for achievement
-    console.log(moneyEarned)
     if (moneyEarned >= 100) {
         const res = await fetch('/api/achievement/cash-cow')
         const achievement = await res.json()
@@ -349,6 +348,7 @@ const gameOver = () => {
 
 
 // FEED PET ---------------------------------------------
+let timesFed = 0
 const feedPet = async (item) => {
     let inventory
 
@@ -382,7 +382,18 @@ const feedPet = async (item) => {
                 console.log('error')
         }
 
+        // Check for achievements
+        timesFed++
+        if (timesFed > 4) {
+            const res = await fetch('/api/achievement/five-star-feeder')
+            const achievement = await res.json()
 
+            if (!achievement.earned) {
+                awardAchievement('five-star-feeder')
+                sendToastMsg('Congrats! You earned the Five Star Feeder Achievement!')
+                addToHistory(`${myPet.name} earned the Five Star Feeder achievement!`)
+            }
+        }
     } else {
         console.log(`you have no ${item}`)
     }
