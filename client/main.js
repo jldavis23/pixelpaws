@@ -446,12 +446,14 @@ const chooseMinigame = document.querySelector('#choose-minigame')
 let questions
 let currentQuestionIndex = 0
 let triviaPointsAwarded = 0
+let answersCorrect = 0
 
 const renderTriviaGame = async () => {
     // reset the variables
     questions = null
     currentQuestionIndex = 0
     triviaPointsAwarded = 0
+    answersCorrect = 0
 
     // Remove the minigame selection
     minigameTitle.textContent = 'Animal Trivia'
@@ -553,6 +555,7 @@ const checkAnswer = (choice) => {
     // Inform the user if they got the answer correct
     yourAnswer.textContent = htmlReplace(choice.text)
     if (choice.isCorrect) {
+        answersCorrect++
         triviaFeedbackText.textContent = 'correct!'
         triviaFeedbackText.classList.remove('text-error')
         triviaFeedbackText.classList.add('text-success')
@@ -604,7 +607,7 @@ const nextTriviaQuestion = () => {
         )
 
         const finishTriviaBtn = document.querySelector('#finish-trivia-btn')
-        finishTriviaBtn.addEventListener('click', () => {
+        finishTriviaBtn.addEventListener('click', async () => {
             // close the modal
             minigameModal.close()
 
@@ -613,6 +616,18 @@ const nextTriviaQuestion = () => {
 
             // reset the trivia game
             resetMiniGame()
+
+            // Check if user earned achievement
+            if (answersCorrect === 3) {
+                const res = await fetch('/api/achievement/smarty-pants')
+                const achievement = await res.json()
+                if (!achievement.earned) {
+                    awardAchievement('smarty-pants')
+                    sendToastMsg('Congrats! You won the Smarty Pants achievement!')
+                    addToHistory(`${myPet.name} earned the Smarty Pants achievement!`)
+                }
+            }
+
         })
     }
 }

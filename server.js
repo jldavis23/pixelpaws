@@ -80,6 +80,13 @@ let myAchievements = [
 
 // ACHIEVEMENTS ---------------------------------------------
 
+// GET ACHIEVEMENT 
+app.get('/api/achievement/:id', (req, res) => {
+    const achievement = myAchievements.filter(item => item.id === req.params.id)
+
+    res.send(achievement[0])
+})
+
 // PUT ACHIEVEMENTS (update)
 app.put('/api/achievements/:id', (req, res) => {
     const achievement = myAchievements.filter(item => item.id === req.params.id)
