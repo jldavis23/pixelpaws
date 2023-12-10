@@ -274,6 +274,7 @@ const awardAchievement = async (id) => {
             </div>
         </li>`
     )
+    achievementContainer.removeChild(document.querySelector(`#${id}-placeholder`))
 }
 
 // SEND TOAST MESSAGE ---------------------------------------------
