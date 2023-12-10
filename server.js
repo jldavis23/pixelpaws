@@ -37,12 +37,12 @@ let myInventory = {
 }
 
 let petSkills = {
-    agility: 9,
-    strength: 9,
-    intelligence: 10,
-    stealth: 10,
-    endurance: 10,
-    hunting: 10
+    agility: 0,
+    strength: 0,
+    intelligence: 0,
+    stealth: 0,
+    endurance: 0,
+    hunting: 0
 }
 
 let myAchievements = [
@@ -80,7 +80,12 @@ let myAchievements = [
 
 // ACHIEVEMENTS ---------------------------------------------
 
-// GET ACHIEVEMENT 
+// GET ALL ACHIEVEMENTS
+app.get('/api/achievements', (req, res) => {
+    res.send(myAchievements)
+})
+
+// GET ACHIEVEMENT BY ID
 app.get('/api/achievement/:id', (req, res) => {
     const achievement = myAchievements.filter(item => item.id === req.params.id)
 

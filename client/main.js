@@ -100,6 +100,16 @@ const renderGame = async (e) => {
         })
     })
 
+    // Render the achievements
+    const achieveRes = await fetch('/api/achievements')
+    const achievements = await achieveRes.json()
+    achievements.forEach(achieve => {
+        if (achieve.earned) awardAchievement(achieve.id)
+    })
+
+    // Render the inventory
+    updateInvQtys()
+
     // Display the player's money
     updateAndRenderMoney()
 
@@ -403,24 +413,27 @@ const feedPet = async (item) => {
 
 // UPDATE INVENTORY QUANTITIES ---------------------------------------------
 const updateInvQtys = async (item, direction, amount) => {
-    let inventory
+    const response = await fetch('/api/inventory')
+    let inventory = await response.json()
 
     // Send PUT (update) request to server
-    try {
-        const res = await fetch(`/api/inventory/${item}`, {
-            method: 'PUT',
-            headers: {
-                "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-                direction: direction,
-                amount: amount
+    if (item && direction && amount) {
+        try {
+            const res = await fetch(`/api/inventory/${item}`, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    direction: direction,
+                    amount: amount
+                })
             })
-        })
 
-        inventory = await res.json()
-    } catch (err) {
-        console.error(err)
+            inventory = await res.json()
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     // Render the inventory qtys in DOM
