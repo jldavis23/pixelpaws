@@ -209,6 +209,35 @@ const addToHistory = (text) => {
     )
 }
 
+// ADD AN ACHIEVEMENT ---------------------------------------------
+const awardAchievement = async (id) => {
+    let achievement
+
+    try {
+        const res = await fetch(`/api/achievements/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        achievement = await res.json()
+    } catch (err) {
+        console.error(err)
+    }
+
+    const achievementContainer = document.querySelector('#achievement-container')
+    achievementContainer.insertAdjacentHTML(
+        'afterbegin',
+        `<li class="border-b py-1 flex gap-1 items-center">
+            <img src="images/ribbon.png" class="w-7">
+            <div>
+                <p class="font-bold">${achievement.name}</p>
+                <p class="text-xs">${achievement.description}</p>
+            </div>
+        </li>`
+    )
+}
+
 // SEND TOAST MESSAGE ---------------------------------------------
 const sendToastMsg = (text) => {
     const toast = document.querySelector('#toast')

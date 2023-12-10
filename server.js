@@ -45,6 +45,51 @@ let petSkills = {
     hunting: 0
 }
 
+let myAchievements = [
+    {
+        id: 'skill-master',
+        name: 'Skill Master',
+        description: 'Max out every skill',
+        earned: false
+    },
+    {
+        id: 'contest-conqueror',
+        name: 'Contest Conqueror',
+        description: 'Win every contest', 
+        earned: false
+    },
+    {
+        id: 'smarty-pants',
+        name: 'Smarty Pants',
+        description: 'Get a perfect score on the animal quiz',
+        earned: false
+    },
+    {
+        id: 'cash-cow',
+        name: 'Cash Cow',
+        description: 'Earn $100',
+        earned: false
+    },
+    {
+        id: 'five-star-feeder',
+        name: 'Five-Star Feeder',
+        description: 'Feed your pet 5 times',
+        earned: false
+    }
+]
+
+// ACHIEVEMENTS ---------------------------------------------
+
+// PUT ACHIEVEMENTS (update)
+app.put('/api/achievements/:id', (req, res) => {
+    const achievement = myAchievements.filter(item => item.id === req.params.id)
+
+    achievement[0].earned = true
+
+    res.send(achievement[0])
+})
+
+
 // MY PET ---------------------------------------------
 
 // GET MY PET
