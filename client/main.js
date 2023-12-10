@@ -81,6 +81,25 @@ const renderGame = async (e) => {
     decayPetNeed('hunger')
     decayPetNeed('sleep')
 
+    // Render the pet's skills
+    const skills = await getPetSkills()
+    const skillBars = document.querySelectorAll('#skill-bars progress')
+    const skillLabels = document.querySelectorAll('#skill-bars span')
+
+    Object.keys(skills).forEach(skill => {
+        skillBars.forEach(bar => {
+            if (bar.id === `${skill}-bar`) {
+                bar.value = skills[skill]
+            }
+        })
+
+        skillLabels.forEach(label => {
+            if (label.id === `${skill}-label`) {
+                label.textContent = skills[skill]
+            }
+        })
+    })
+
     // Display the player's money
     updateAndRenderMoney()
 
@@ -861,12 +880,15 @@ const trainSkill = async (skill, level) => {
 
             // Check for maxed skills
             if (petSkillLevels[skill] === 10) {
-                console.log(`congratulations! You maxxed out the ${skill} skill!`)
+                sendToastMsg(`Congratulations! You maxxed out the ${skill} skill!`)
             }
 
             // Check for achievements
             if (Object.values(petSkillLevels).reduce((acc, curr) => acc + curr, 0) === 60) {
-                console.log('congratulations! You maxxed out EVERY SKILL!')
+                // console.log('congratulations! You maxxed out EVERY SKILL!')
+                awardAchievement('skill-master')
+                sendToastMsg('Congratulations! You maxxed out every skill and earned the Skill Master Achievement!')
+                addToHistory(`${myPet.name} earned the Skill Master achievement!`)
             }
         })
 
