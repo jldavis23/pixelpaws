@@ -133,6 +133,10 @@ const renderGame = async (e) => {
         }
     })
 
+    // Add event listener to Sleep button
+    const sleepBtn = document.querySelector('#sleep-btn')
+    sleepBtn.addEventListener('click', sendPetToSleep)
+
     // Render the Mini-Games Modal
     const minigameModal = document.querySelector('#minigames-modal')
     const minigameBtn = document.querySelector('#play-minigame-btn')
@@ -466,6 +470,18 @@ const purchaseAnItem = async (item, price) => {
     } else {
         console.log('not enough money')
     }
+}
+
+const sendPetToSleep = () => {
+    const allBtns = document.querySelectorAll('button')
+    allBtns.forEach(btn => btn.classList.add('btn-disabled'))
+
+    console.log('update pet pic to sleeping pet')
+
+    setTimeout(() => {
+        allBtns.forEach(btn => btn.classList.remove('btn-disabled'))
+        updatePetNeedBars('sleep', 'increase', 20)
+    }, 5000)
 }
 
 
