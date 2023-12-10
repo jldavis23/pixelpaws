@@ -885,7 +885,6 @@ const trainSkill = async (skill, level) => {
 
             // Check for achievements
             if (Object.values(petSkillLevels).reduce((acc, curr) => acc + curr, 0) === 60) {
-                // console.log('congratulations! You maxxed out EVERY SKILL!')
                 awardAchievement('skill-master')
                 sendToastMsg('Congratulations! You maxxed out every skill and earned the Skill Master Achievement!')
                 addToHistory(`${myPet.name} earned the Skill Master achievement!`)
@@ -897,6 +896,14 @@ const trainSkill = async (skill, level) => {
 
 
 // PET CONTESTS ---------------------------------------------
+let contestsWon = {
+    'agility-challenge': false,
+    'strengthShowdown': true,
+    'mindMaze': true,
+    'stealthy-infiltration': true,
+    'endurance-marathon': true,
+    'hunting-expedition': true
+}
 
 const enterContest = async (contest, mainSkill, otherSkill) => {
     const contestContainer = document.querySelector('#contest-container')
@@ -928,11 +935,10 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
         let playerWon
 
         if (randomValue < percentChance) {
-            console.log('you won!')
             playerWon = true
+            contestsWon[contest] = true
             updateAndRenderMoney('increase', 30)
         } else {
-            console.log('you lost')
             playerWon = false
         }
 
@@ -968,7 +974,11 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
             contestContainer.appendChild(chooseContest)
 
             // Check for achievements
-            console.log('checking for achievements')
+            if (Object.values(contestsWon).every(contest => contest === true)) {
+                awardAchievement('contest-conqueror')
+                sendToastMsg('Congrats! You earned the Contest Conqueror achievement!')
+                addToHistory(`${myPet.name} earned the Contest Conqueror achievement!`)
+            }
         })
 
     }, 3000)
