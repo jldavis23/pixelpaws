@@ -189,6 +189,8 @@ const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', renderGame)
 
 // UPDATE AND RENDER MONEY ---------------------------------------------
+let moneyEarned = 0
+
 const updateAndRenderMoney = async (direction, amount) => {
 
     // fetch money from api
@@ -197,6 +199,11 @@ const updateAndRenderMoney = async (direction, amount) => {
     let money = moneyObj.money
 
     if (direction) {
+        // add the moneyEarned
+        if (direction === 'increase') {
+            moneyEarned = moneyEarned + amount
+        }
+
         // send PUT request to update money
         const response = await fetch('/api/money', {
             method: 'PUT',
@@ -215,6 +222,19 @@ const updateAndRenderMoney = async (direction, amount) => {
     // Rerender money in the DOM
     document.querySelector('#money-display').textContent = money //main money display
     document.querySelector('#purchase-items-money').textContent = money //money display inside modal
+
+    // Check for achievement
+    console.log(moneyEarned)
+    if (moneyEarned >= 100) {
+        const res = await fetch('/api/achievement/cash-cow')
+        const achievement = await res.json()
+
+        if (!achievement.earned) {
+            awardAchievement('cash-cow')
+            sendToastMsg('Congrats! You won the Cash Cow Achievement!')
+            addToHistory(`${myPet.name} won the Cash Cow achievement!`)
+        }
+    }
 }
 
 
@@ -913,8 +933,8 @@ const trainSkill = async (skill, level) => {
 // PET CONTESTS ---------------------------------------------
 let contestsWon = {
     'agility-challenge': false,
-    'strengthShowdown': false,
-    'mindMaze': false,
+    'strength-showdown': false,
+    'mind-maze': false,
     'stealthy-infiltration': false,
     'endurance-marathon': false,
     'hunting-expedition': false
