@@ -1039,7 +1039,6 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
                 <button id="finish-contest-btn" class="btn btn-sm">finish</button>
             </div>`
         )
-        closeContestBtn.classList.remove('hidden')
 
         // Add the contest results to the History
         addToHistory(`${myPet.name} ${playerWon ? 'won' : 'lost'} the ${contest.replace('-', ' ')} contest`)
@@ -1056,6 +1055,8 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
                 contestContainer.removeChild(contestContainer.firstChild)
             }
             contestContainer.appendChild(chooseContest)
+
+            closeContestBtn.classList.remove('hidden')
 
             // Check for achievements
             if (Object.values(contestsWon).every(contest => contest === true)) {
@@ -1076,9 +1077,19 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
 
 // GO ON ADVENTURES ---------------------------------------------
 const adventureContainer = document.querySelector('#adventure-container')
+const chooseStartPoint = document.querySelector('#choose-starting-point')
+const closeAdventureBtn = document.querySelector('#close-adventure-btn')
 
+const resetAdventureModal = () => {
+    while (adventureContainer.firstChild) {
+        adventureContainer.removeChild(adventureContainer.firstChild)
+    }
+    adventureContainer.appendChild(chooseStartPoint)
+}
+closeAdventureBtn.addEventListener('click', resetAdventureModal)
+
+// START ADVENTURE (Render the set of options based on starting point)
 const startAdventure = async (startingPoint) => {
-    const chooseStartPoint = document.querySelector('#choose-starting-point')
     chooseStartPoint.remove()
 
     const res = await fetch(`/api/adventure/${startingPoint}`)
@@ -1118,6 +1129,9 @@ const startAdventure = async (startingPoint) => {
 }
 
 const adventureResults = async (startingPoint, location, chosenOption) => {
+    // Hide the close button
+    closeAdventureBtn.classList.add('hidden')
+
     let skills = await getPetSkills()
 
     let outcome
@@ -1141,7 +1155,10 @@ const adventureResults = async (startingPoint, location, chosenOption) => {
         'beforeend',
         `<p class="my-4 text-xs">Location: ${startingPoint}</p>
         <p class="my-4 text-xs">Choice: </p>
-        <p class="text-neutral text-sm my-4">${chosenOption[outcome].description}</p>`
+        <p class="text-neutral text-sm my-4">${chosenOption[outcome].description}</p>
+        <div class="flex justify-center">
+            <button id="finish-adventure-btn" class="btn btn-sm">finish</button>
+        </div>`
     )
 
     let reward = chosenOption[outcome].reward
@@ -1150,6 +1167,9 @@ const adventureResults = async (startingPoint, location, chosenOption) => {
         updatePetNeedBars(reward.arguments.need, reward.arguments.direction, reward.arguments.amount)
     }
 }
+
+
+
 
 
 
