@@ -187,6 +187,14 @@ const renderGame = async (e) => {
     })
 
     // Render Go on Adventure Modal
+    const adventureModal = document.querySelector('#adventure-modal')
+    const startAdventureBtn = document.querySelector('#start-adventure-btn')
+    startAdventureBtn.addEventListener('click', () => adventureModal.showModal())
+
+    const startingPointBtns = document.querySelectorAll('#starting-point-btns div')
+    startingPointBtns.forEach(btn => {
+        btn.addEventListener('click', () => startAdventure(btn.dataset.name))
+    })
 
 
     // Add event listeners to the inventory feed buttons
@@ -1063,6 +1071,84 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
         })
 
     }, 3000)
+}
+
+
+// GO ON ADVENTURES ---------------------------------------------
+const adventureContainer = document.querySelector('#adventure-container')
+
+const startAdventure = async (startingPoint) => {
+    const chooseStartPoint = document.querySelector('#choose-starting-point')
+    chooseStartPoint.remove()
+
+    const res = await fetch(`/api/adventure/${startingPoint}`)
+    const location = await res.json()
+
+    adventureContainer.insertAdjacentHTML(
+        'beforeend',
+        `<p class="my-4 text-xs">Location: ${startingPoint}</p>
+        <p class="text-neutral text-sm my-4">What would you like to do?</p>
+
+        <div id="first-option" class="grid grid-cols-3 gap-5 h-36 mt-5">
+            <div id=""
+                class="bg-primary text-primary-content text-center flex items-center justify-center transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1" data-name=${Object.keys(location)[0]}>
+                ${Object.keys(location)[0].replaceAll('-', ' ')}
+            </div>
+            <div id=""
+                class="bg-secondary text-secondary-content text-center flex items-center justify-center transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1" data-name=${Object.keys(location)[1]}>
+                ${Object.keys(location)[1].replaceAll('-', ' ')}
+            </div>
+            <div id=""
+                class="bg-accent text-accent-content text-center flex items-center justify-center transition-all hover:cursor-pointer hover:shadow hover:-translate-y-1" data-name=${Object.keys(location)[2]}>
+                ${Object.keys(location)[2].replaceAll('-', ' ')}
+            </div>
+        </div>`
+    )
+
+    const firstOptionBtns = document.querySelectorAll('#first-option div')
+    firstOptionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            while (adventureContainer.firstChild) {
+                adventureContainer.removeChild(adventureContainer.firstChild)
+            }
+
+            adventureResults(startingPoint, location, location[btn.dataset.name])
+        })
+    })
+}
+
+const adventureResults = async (startingPoint, location, chosenOption) => {
+    let skills = await getPetSkills()
+
+    let outcome
+    if (chosenOption.condition.category === 'skill') {
+        console.log(skills[chosenOption.condition.type], chosenOption.condition.value)
+        if (skills[chosenOption.condition.type] > chosenOption.condition.value) {
+            outcome = 'positive'
+        } else {
+            outcome = 'negative'
+        }
+    } else {
+        // if condition category is personality
+        if (myPet.personality === chosenOption.condition.value) {
+            outcome = 'positive'
+        } else {
+            outcome = 'negative'
+        }
+    }
+
+    adventureContainer.insertAdjacentHTML(
+        'beforeend',
+        `<p class="my-4 text-xs">Location: ${startingPoint}</p>
+        <p class="my-4 text-xs">Choice: </p>
+        <p class="text-neutral text-sm my-4">${chosenOption[outcome].description}</p>`
+    )
+
+    let reward = chosenOption[outcome].reward
+
+    if (reward.type === 'need') {
+        updatePetNeedBars(reward.arguments.need, reward.arguments.direction, reward.arguments.amount)
+    }
 }
 
 

@@ -55,7 +55,7 @@ let myAchievements = [
     {
         id: 'contest-conqueror',
         name: 'Contest Conqueror',
-        description: 'Win every contest', 
+        description: 'Win every contest',
         earned: false
     },
     {
@@ -77,6 +77,52 @@ let myAchievements = [
         earned: false
     }
 ]
+
+let adventure = {
+    woods: {
+        'Explore-the-deep-woods': {
+            condition: {
+                category: 'personality',
+                value: 'lively'
+            },
+            positive: {
+                description: 'Your pet discovers a bountiful foraging spot, satisfying their hunger.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'hunger',
+                        direction: 'increase',
+                        amount: 100
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet accidentally disturbs a hive of insects while foraging, losing a bit of health.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'health',
+                        direction: 'decrease',
+                        amount: 10
+                    }
+                }
+            }
+        },
+        'Follow a path': {
+
+        },
+        'Set up a camp': {
+
+        }
+    }
+}
+
+// ADVENTURE ---------------------------------------------
+
+// GET ADVENTURE STARING POINT
+app.get('/api/adventure/:startingPoint', (req, res) => {
+    res.send(adventure[req.params.startingPoint])
+})
 
 // ACHIEVEMENTS ---------------------------------------------
 
@@ -122,14 +168,14 @@ app.put('/api/mypet', (req, res) => {
 
 // GET MONEY
 app.get('/api/money', (req, res) => {
-    res.send({money: money})
+    res.send({ money: money })
 })
 
 // PUT MONEY (update)
 app.put('/api/money', (req, res) => {
     money = req.body.money
 
-    res.send({money: money})
+    res.send({ money: money })
 })
 
 // INVENTORY ---------------------------------------------
@@ -173,7 +219,7 @@ app.put('/api/petskills/:skill', (req, res) => {
         petSkills[skill] = 10
     }
 
-    res.send({[skill]: petSkills[skill]})
+    res.send({ [skill]: petSkills[skill] })
 })
 
 
