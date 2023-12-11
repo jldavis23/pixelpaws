@@ -38,8 +38,8 @@ let myInventory = {
 
 let petSkills = {
     agility: 0,
-    strength: 0,
-    intelligence: 0,
+    strength: 5,
+    intelligence: 6,
     stealth: 0,
     endurance: 0,
     hunting: 0
@@ -108,11 +108,229 @@ let adventure = {
                 }
             }
         },
-        'Follow a path': {
-
+        'Follow-a-path': {
+            condition: {
+                category: 'skill',
+                type: 'agility',
+                value: 3
+            },
+            positive: {
+                description: 'Your pet masterfully avoids obstacles along the path and discovers a treasure chest with $15. Finders keepers!',
+                reward: {
+                    type: 'money',
+                    arguments: {
+                        direction: 'increase',
+                        amount: 15
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet discovers a treasure chest, but when it opens out flies stinging insects. Your pet cannot avoid them, and they get stung. Their health is decreased.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'health',
+                        direction: 'decrease',
+                        amount: 15
+                    }
+                }
+            }
         },
-        'Set up a camp': {
-
+        'Set-up-a-camp': {
+            condition: {
+                category: 'personality',
+                value: 'mellow'
+            },
+            positive: {
+                description: 'Your pet has a restful night, raising their sleep.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'sleep',
+                        direction: 'increase',
+                        amount: 50
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet has trouble sleeping, lowering their happiness',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'happiness',
+                        direction: 'decrease',
+                        amount: 10
+                    }
+                }
+            }
+        }
+    },
+    mountains: {
+        'Climb-higher': {
+            condition: {
+                category: 'personality',
+                value: 'quirky'
+            },
+            positive: {
+                description: 'Your pet meets a skilled mountain guide who imparts knowledge and helps them climb, increasing agility.',
+                reward: {
+                    type: 'skill',
+                    arguments: {
+                        skill: 'agility',
+                        amount: 2
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet meets a mountain guide who turns out to be a scam artist. They take $25 from you.',
+                reward: {
+                    type: 'money',
+                    arguments: {
+                        direction: 'decrease',
+                        amount: 25
+                    }
+                }
+            }
+        },
+        'Explore-a-cave': {
+            condition: {
+                category: 'skill',
+                type: 'strength',
+                value: 4
+            },
+            positive: {
+                description: 'Your pet discovers a hot spring and decides to relax, raising their happiness.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'happiness',
+                        direction: 'increase',
+                        amount: 10
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet discovers a hot spring and decides to relax, but it turns out to be too hot. Your pet loses some health.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'health',
+                        direction: 'decrease',
+                        amount: 10
+                    }
+                }
+            }
+        },
+        'Build-a-shelter': {
+            condition: {
+                category: 'skill',
+                type: 'intelligence',
+                value: 3
+            },
+            positive: {
+                description: 'While building your shelter, a wandering merchant approaches you. He tries to con your pet, but your pet is too smart to fall for their tricks. The merchant is impressed and gives you $15',
+                reward: {
+                    type: 'money',
+                    arguments: {
+                        direction: 'increase',
+                        amount: 15
+                    }
+                }
+            },
+            negative: {
+                description: 'While building your shelter, a wandering merchant approaches you. The merchant turns out to be a con man, and he just stole $20 from you. Oops.',
+                reward: {
+                    type: 'money',
+                    arguments: {
+                        direction: 'decrease',
+                        amount: 20
+                    }
+                }
+            }
+        }
+    },
+    beach: {
+        'Explore-the-tide-pools': {
+            condition: {
+                category: 'skill',
+                type: 'agility',
+                value: 2
+            },
+            positive: {
+                description: 'Your pet is careful to not step on any of the animals in the tide pool. They learn about marine life, gaining an intelligence point.',
+                reward: {
+                    type: 'skill',
+                    arguments: {
+                        skill: 'intelligence',
+                        amount: 1
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet loses their balance on the rocks and steps on a sea urchin, causing them to lose health.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'health',
+                        direction: 'decrease',
+                        amount: 5
+                    }
+                }
+            }
+        },
+        'Go-for-a-swim': {
+            condition: {
+                category: 'personality',
+                value: 'playful'
+            },
+            positive: {
+                description: 'Your pet meets other pets on the beach and has a great time playing games with them. Happiness increases.',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'happiness',
+                        direction: 'increase',
+                        amount: 15
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet meets other pets on the beach. But the other pets are competitive, causing your pet to lose a game and feel a bit humiliated. Happiness decreases',
+                reward: {
+                    type: 'need',
+                    arguments: {
+                        need: 'happiness',
+                        direction: 'decrease',
+                        amount: 15
+                    }
+                }
+            }
+        },
+        'Build-a-sandcastle': {
+            condition: {
+                category: 'personality',
+                value: 'cautious'
+            },
+            positive: {
+                description: 'While building a sandcastle, your pet encounters a friendly seagull. It brings your a small gift of $10',
+                reward: {
+                    type: 'money',
+                    arguments: {
+                        direction: 'increase',
+                        amount: 10
+                    }
+                }
+            },
+            negative: {
+                description: 'Your pet encounters a mischievous seagull who smashes your sandcastle and steals $15 from you. How rude.',
+                reward: {
+                    type: 'money',
+                    arguments: {
+                        direction: 'decrease',
+                        amount: 15
+                    }
+                }
+            }
         }
     }
 }

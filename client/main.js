@@ -1123,13 +1123,13 @@ const startAdventure = async (startingPoint) => {
                 adventureContainer.removeChild(adventureContainer.firstChild)
             }
 
-            adventureResults(startingPoint, location, location[btn.dataset.name])
+            adventureResults(startingPoint, btn.dataset.name, location[btn.dataset.name])
         })
     })
 }
 
 // SHOW THE RESULTS OF THE ADVENTURE
-const adventureResults = async (startingPoint, location, chosenOption) => {
+const adventureResults = async (startingPoint, optionName, chosenOption) => {
     // Hide the close button
     closeAdventureBtn.classList.add('hidden')
 
@@ -1151,7 +1151,7 @@ const adventureResults = async (startingPoint, location, chosenOption) => {
     adventureContainer.insertAdjacentHTML(
         'beforeend',
         `<p class="my-4 text-xs">Location: ${startingPoint}</p>
-        <p class="my-4 text-xs">Choice: </p>
+        <p class="my-4 text-xs">Choice: ${optionName.replaceAll('-', ' ')}</p>
         <p class="text-neutral text-sm my-4">${chosenOption[outcome].description}</p>
         <div class="flex justify-center">
             <button id="finish-adventure-btn" class="btn btn-sm">finish</button>
@@ -1173,8 +1173,15 @@ const adventureResults = async (startingPoint, location, chosenOption) => {
         // Earn reward 
         let reward = chosenOption[outcome].reward
 
-        if (reward.type === 'need') {
-            updatePetNeedBars(reward.arguments.need, reward.arguments.direction, reward.arguments.amount)
+        switch (reward.type) {
+            case 'need':
+                updatePetNeedBars(reward.arguments.need, reward.arguments.direction, reward.arguments.amount)
+                break
+            case 'money':
+                updateAndRenderMoney(reward.arguments.direction, reward.arguments.amount)
+                break
+            case 'skill': 
+                updateAndRenderPetSkill(reward.arguments.skill, reward.arguments.amount)
         }
 
         // Add a history moment
