@@ -1128,29 +1128,26 @@ const startAdventure = async (startingPoint) => {
     })
 }
 
+// SHOW THE RESULTS OF THE ADVENTURE
 const adventureResults = async (startingPoint, location, chosenOption) => {
     // Hide the close button
     closeAdventureBtn.classList.add('hidden')
 
+    // Get the pet's skills
     let skills = await getPetSkills()
 
+    // Determine whether the outcome will be positive or negative based on pet's personality/skills
     let outcome
-    if (chosenOption.condition.category === 'skill') {
-        console.log(skills[chosenOption.condition.type], chosenOption.condition.value)
-        if (skills[chosenOption.condition.type] > chosenOption.condition.value) {
-            outcome = 'positive'
-        } else {
-            outcome = 'negative'
-        }
-    } else {
-        // if condition category is personality
-        if (myPet.personality === chosenOption.condition.value) {
-            outcome = 'positive'
-        } else {
-            outcome = 'negative'
-        }
+    switch (chosenOption.condition.category) {
+        case 'skill':
+            skills[chosenOption.condition.type] > chosenOption.condition.value ? outcome = 'positive' : outcome = 'negative'
+            break
+        case 'personality':
+            myPet.personality === chosenOption.condition.value ? outcome = 'positive' : outcome = 'negative'
+            break
     }
 
+    // Add results the DOM
     adventureContainer.insertAdjacentHTML(
         'beforeend',
         `<p class="my-4 text-xs">Location: ${startingPoint}</p>
@@ -1160,12 +1157,29 @@ const adventureResults = async (startingPoint, location, chosenOption) => {
             <button id="finish-adventure-btn" class="btn btn-sm">finish</button>
         </div>`
     )
+    closeAdventureBtn.classList.add('hidden')
 
-    let reward = chosenOption[outcome].reward
 
-    if (reward.type === 'need') {
-        updatePetNeedBars(reward.arguments.need, reward.arguments.direction, reward.arguments.amount)
-    }
+    // When a user clicks "finish", the skill modal closes and resets
+    const finishAdventureBtn = document.querySelector('#finish-adventure-btn')
+    finishAdventureBtn.addEventListener('click', async () => {
+        // close modal
+        const adventureModal = document.querySelector('#adventure-modal')
+        adventureModal.close()
+
+        // reset the modal
+        resetAdventureModal()
+
+        // Earn reward 
+        let reward = chosenOption[outcome].reward
+
+        if (reward.type === 'need') {
+            updatePetNeedBars(reward.arguments.need, reward.arguments.direction, reward.arguments.amount)
+        }
+
+        // Add a history moment
+        addToHistory(`${myPet.name} had a ${outcome} outcome on an adventure`)
+    })
 }
 
 
