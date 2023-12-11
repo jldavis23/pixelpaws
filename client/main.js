@@ -32,7 +32,7 @@ const renderGame = async (e) => {
     }
     petData.type = selectedPet
     const petPic = document.querySelector('#pet-pic')
-    petPic.src = `images/${selectedPet}.jpg`
+    petPic.src = `images/${selectedPet}/default.png`
 
     // Assign the inputed name
     const nameInput = document.querySelector('#name-input')
@@ -126,7 +126,11 @@ const renderGame = async (e) => {
             updatePetNeedBars('happiness', 'increase', 1)
             sendToastMsg(`${myPet.name} loves the attention!`)
 
-            console.log('changing pet pic to hearts')
+            petPic.src = `images/${selectedPet}/happy.png`
+
+            setTimeout(() => {
+                petPic.src = `images/${selectedPet}/default.png`
+            }, 5000)
 
             // Update the last click time
             lastClickTime = currentTime;
@@ -484,11 +488,15 @@ const sendPetToSleep = () => {
     const allBtns = document.querySelectorAll('button')
     allBtns.forEach(btn => btn.classList.add('btn-disabled'))
 
-    console.log('update pet pic to sleeping pet')
+    // Change pet pic to sleeping pet
+    const petPic = document.querySelector('#pet-pic')
+    petPic.src = `images/${myPet.type}/sleep.png`
 
+    // After a few seconds, increase sleep and set picture back to default
     setTimeout(() => {
         allBtns.forEach(btn => btn.classList.remove('btn-disabled'))
         updatePetNeedBars('sleep', 'increase', 20)
+        petPic.src = `images/${myPet.type}/default.png`
     }, 5000)
 }
 
@@ -1169,6 +1177,7 @@ const adventureResults = async (startingPoint, optionName, chosenOption) => {
 
         // reset the modal
         resetAdventureModal()
+        closeAdventureBtn.classList.remove('hidden')
 
         // Earn reward 
         let reward = chosenOption[outcome].reward
