@@ -26,6 +26,8 @@ let money = 80
 
 let myPet 
 
+let history = []
+
 let myInventory = {
     kibble: 0,
     treat: 0,
@@ -41,38 +43,7 @@ let petSkills = {
     hunting: 10
 }
 
-let myAchievements = [
-    // {
-    //     id: 'skill-master',
-    //     name: 'Skill Master',
-    //     description: 'Max out every skill',
-    //     earned: false
-    // },
-    // {
-    //     id: 'contest-conqueror',
-    //     name: 'Contest Conqueror',
-    //     description: 'Win every contest',
-    //     earned: false
-    // },
-    // {
-    //     id: 'smarty-pants',
-    //     name: 'Smarty Pants',
-    //     description: 'Get a perfect score on the animal quiz',
-    //     earned: false
-    // },
-    // {
-    //     id: 'cash-cow',
-    //     name: 'Cash Cow',
-    //     description: 'Earn $100',
-    //     earned: false
-    // },
-    // {
-    //     id: 'five-star-feeder',
-    //     name: 'Five-Star Feeder',
-    //     description: 'Feed your pet 5 times',
-    //     earned: false
-    // }
-]
+let myAchievements = []
 
 let adventure = {
     woods: {
@@ -435,6 +406,27 @@ app.put('/api/petskills/:skill', (req, res) => {
     }
 
     res.send({ [skill]: petSkills[skill] })
+})
+
+// HISTORY --------------------------------
+
+// GET HISTORY
+app.get('/api/history', (req, res) => {
+    res.send(history)
+})
+
+// ADD TO HISTORY 
+app.post('/api/history', (req, res) => {
+    history.push(req.body.text)
+
+    res.send(history)
+})
+
+// DELETE HISTORY MOMENT
+app.delete('/api/history', (req, res) => {
+    history.shift()
+
+    res.send(history)
 })
 
 

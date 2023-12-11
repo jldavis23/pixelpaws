@@ -264,13 +264,42 @@ const updateAndRenderMoney = async (direction, amount) => {
 
 
 // ADD A HISTORY MOMENT ---------------------------------------------
-const addToHistory = (text) => {
-    const historyContainer = document.querySelector('#history-container')
+const addToHistory = async (text) => {
+    // add history moment to API
+    const res = await fetch('api/history', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            text: text
+        })
+    })
+    let historyArray = await res.json()
 
-    historyContainer.insertAdjacentHTML(
-        'afterbegin',
-        `<li class="border-b py-2 text-xs">${text}</li>`
-    )
+    // If the array is longer than 20, delete the oldest one
+    if (historyArray.length > 20) {
+        const response = await fetch('api/history', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        historyArray = await response.json()
+    }
+
+    // Rerender all the history moments
+    const historyContainer = document.querySelector('#history-container')
+    while (historyContainer.firstChild) {
+        historyContainer.removeChild(historyContainer.firstChild)
+    }
+
+    historyArray.forEach(moment => {
+        historyContainer.insertAdjacentHTML(
+            'afterbegin',
+            `<li class="border-b py-2 text-xs">${moment}</li>`
+        )
+    })
 }
 
 // ADD AN ACHIEVEMENT ---------------------------------------------
@@ -282,7 +311,7 @@ const awardAchievement = async (id, name, description) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }, 
+            },
             body: JSON.stringify({
                 id: id,
                 name: name,
@@ -1195,7 +1224,7 @@ const adventureResults = async (startingPoint, optionName, chosenOption) => {
             case 'money':
                 updateAndRenderMoney(reward.arguments.direction, reward.arguments.amount)
                 break
-            case 'skill': 
+            case 'skill':
                 updateAndRenderPetSkill(reward.arguments.skill, reward.arguments.amount)
         }
 
