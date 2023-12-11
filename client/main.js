@@ -63,7 +63,7 @@ const renderGame = async (e) => {
     // Send the petData to server to update myPet
     try {
         const res = await fetch('/api/mypet', {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -255,7 +255,7 @@ const updateAndRenderMoney = async (direction, amount) => {
         const achievement = await res.json()
 
         if (!achievement.earned) {
-            awardAchievement('cash-cow')
+            awardAchievement('cash-cow', 'Cash Cow', 'Earn $100')
             sendToastMsg('Congrats! You won the Cash Cow Achievement!')
             addToHistory(`${myPet.name} won the Cash Cow achievement!`)
         }
@@ -274,15 +274,21 @@ const addToHistory = (text) => {
 }
 
 // ADD AN ACHIEVEMENT ---------------------------------------------
-const awardAchievement = async (id) => {
+const awardAchievement = async (id, name, description) => {
     let achievement
 
     try {
-        const res = await fetch(`/api/achievements/${id}`, {
-            method: 'PUT',
+        const res = await fetch(`/api/achievements`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            }, 
+            body: JSON.stringify({
+                id: id,
+                name: name,
+                description: description,
+                earned: true
+            })
         })
         achievement = await res.json()
     } catch (err) {
@@ -416,13 +422,13 @@ const feedPet = async (item) => {
             const achievement = await res.json()
 
             if (!achievement.earned) {
-                awardAchievement('five-star-feeder')
+                awardAchievement('five-star-feeder', 'Five Star Feeder', 'Feed your pet 5 times')
                 sendToastMsg('Congrats! You earned the Five Star Feeder Achievement!')
                 addToHistory(`${myPet.name} earned the Five Star Feeder achievement!`)
             }
         }
     } else {
-        console.log(`you have no ${item}`)
+        sendToastMsg(`you have no ${item}`)
     }
 }
 
@@ -480,7 +486,7 @@ const purchaseAnItem = async (item, price) => {
         // Add item to inventory object, display in DOM
         updateInvQtys(item, 'increase', 1)
     } else {
-        console.log('not enough money')
+        sendToastMsg('not enough money')
     }
 }
 
@@ -699,7 +705,7 @@ const nextTriviaQuestion = () => {
                 const res = await fetch('/api/achievement/smarty-pants')
                 const achievement = await res.json()
                 if (!achievement.earned) {
-                    awardAchievement('smarty-pants')
+                    awardAchievement('smarty-pants', 'Smarty Pants', 'Get a perfect score on the animal quiz')
                     sendToastMsg('Congrats! You won the Smarty Pants achievement!')
                     addToHistory(`${myPet.name} earned the Smarty Pants achievement!`)
                 }
@@ -977,7 +983,7 @@ const trainSkill = async (skill, level) => {
 
             // Check for achievements
             if (Object.values(petSkillLevels).reduce((acc, curr) => acc + curr, 0) === 60) {
-                awardAchievement('skill-master')
+                awardAchievement('skill-master', 'Skill Master', 'Max out every skill')
                 sendToastMsg('Congratulations! You maxxed out every skill and earned the Skill Master Achievement!')
                 addToHistory(`${myPet.name} earned the Skill Master achievement!`)
             }
@@ -1072,7 +1078,7 @@ const enterContest = async (contest, mainSkill, otherSkill) => {
                 const achievement = await res.json()
 
                 if (!achievement.earned) {
-                    awardAchievement('contest-conqueror')
+                    awardAchievement('contest-conqueror', 'Contest Conqueror', 'Win every contest')
                     sendToastMsg('Congrats! You earned the Contest Conqueror achievement!')
                     addToHistory(`${myPet.name} earned the Contest Conqueror achievement!`)
                 }

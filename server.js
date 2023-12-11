@@ -24,11 +24,7 @@ app.use((req, res, next) => {
 // DATA ---------------------------------------------
 let money = 80
 
-let myPet = {
-    type: '',
-    name: '',
-    personality: ''
-}
+let myPet 
 
 let myInventory = {
     kibble: 0,
@@ -37,45 +33,45 @@ let myInventory = {
 }
 
 let petSkills = {
-    agility: 0,
-    strength: 5,
-    intelligence: 6,
-    stealth: 0,
-    endurance: 0,
-    hunting: 0
+    agility: 9,
+    strength: 10,
+    intelligence: 10,
+    stealth: 10,
+    endurance: 10,
+    hunting: 10
 }
 
 let myAchievements = [
-    {
-        id: 'skill-master',
-        name: 'Skill Master',
-        description: 'Max out every skill',
-        earned: false
-    },
-    {
-        id: 'contest-conqueror',
-        name: 'Contest Conqueror',
-        description: 'Win every contest',
-        earned: false
-    },
-    {
-        id: 'smarty-pants',
-        name: 'Smarty Pants',
-        description: 'Get a perfect score on the animal quiz',
-        earned: false
-    },
-    {
-        id: 'cash-cow',
-        name: 'Cash Cow',
-        description: 'Earn $100',
-        earned: false
-    },
-    {
-        id: 'five-star-feeder',
-        name: 'Five-Star Feeder',
-        description: 'Feed your pet 5 times',
-        earned: false
-    }
+    // {
+    //     id: 'skill-master',
+    //     name: 'Skill Master',
+    //     description: 'Max out every skill',
+    //     earned: false
+    // },
+    // {
+    //     id: 'contest-conqueror',
+    //     name: 'Contest Conqueror',
+    //     description: 'Win every contest',
+    //     earned: false
+    // },
+    // {
+    //     id: 'smarty-pants',
+    //     name: 'Smarty Pants',
+    //     description: 'Get a perfect score on the animal quiz',
+    //     earned: false
+    // },
+    // {
+    //     id: 'cash-cow',
+    //     name: 'Cash Cow',
+    //     description: 'Earn $100',
+    //     earned: false
+    // },
+    // {
+    //     id: 'five-star-feeder',
+    //     name: 'Five-Star Feeder',
+    //     description: 'Feed your pet 5 times',
+    //     earned: false
+    // }
 ]
 
 let adventure = {
@@ -353,16 +349,19 @@ app.get('/api/achievements', (req, res) => {
 app.get('/api/achievement/:id', (req, res) => {
     const achievement = myAchievements.filter(item => item.id === req.params.id)
 
-    res.send(achievement[0])
+    if (achievement[0]) {
+        res.send(achievement[0])
+    } else {
+        res.send({msg: 'does not exist'})
+    }
+    
 })
 
-// PUT ACHIEVEMENTS (update)
-app.put('/api/achievements/:id', (req, res) => {
-    const achievement = myAchievements.filter(item => item.id === req.params.id)
+// POST ACHIEVEMENTS (create)
+app.post('/api/achievements/', (req, res) => {
+    myAchievements.push(req.body)
 
-    achievement[0].earned = true
-
-    res.send(achievement[0])
+    res.send(myAchievements[myAchievements.length - 1])
 })
 
 
@@ -373,11 +372,9 @@ app.get('/api/mypet', (req, res) => {
     res.send(myPet)
 })
 
-// PUT MY PET (update)
-app.put('/api/mypet', (req, res) => {
-    myPet.type = req.body.type
-    myPet.name = req.body.name
-    myPet.personality = req.body.personality
+// POST MY PET (create)
+app.post('/api/mypet', (req, res) => {
+    myPet = req.body
 
     res.send(myPet)
 })
