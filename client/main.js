@@ -209,6 +209,9 @@ const renderGame = async (e) => {
 
     // Remove the beginning Choose Pet Form
     choosePetForm.remove()
+
+    // Send welcome message
+    sendToastMsg("Welcome! Make sure you keep an eye on your pet's needs. If your pet's health reaches zero, they'll die!")
 }
 
 const beginGameBtn = document.querySelector('#begin-game')
