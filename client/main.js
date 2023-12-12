@@ -4,6 +4,17 @@ const choosePetForm = document.querySelector('#choose-pet-form')
 const dashboard = document.querySelector('#dashboard')
 
 let myPet
+let gamesStarted = 0
+let moneyEarned = 0
+let timesFed = 0
+let contestsWon = {
+    'agility-challenge': false,
+    'strength-showdown': false,
+    'mind-maze': false,
+    'stealthy-infiltration': false,
+    'endurance-marathon': false,
+    'hunting-expedition': false
+}
 
 const getMyPet = async () => {
     const res = await fetch('api/mypet')
@@ -89,8 +100,14 @@ const startNewGame = async (e) => {
         console.error(err)
     }
 
-    renderGame()
+    // Reset pet needs
+    const needBars = document.querySelectorAll('#pet-need-section progress')
+    const needLabels = document.querySelectorAll('#pet-need-section span')
+    needBars.forEach(bar => bar.value = 100)
+    needLabels.forEach(label => label.textContent = '100%')
 
+    renderGame()
+    
     // Send welcome message
     sendToastMsg("Welcome! Make sure you keep an eye on your pet's needs. If your pet's health reaches zero, they'll die!")
 
@@ -137,6 +154,25 @@ const renderGame = async () => {
     })
 
     // Render the achievements
+    const achievementContainer = document.querySelector('#achievement-container')
+    while (achievementContainer.firstChild) {
+        achievementContainer.removeChild(achievementContainer.firstChild)
+    }
+
+    achievementContainer.insertAdjacentHTML(
+        'beforeend',
+        `<li id="five-star-feeder-placeholder" class="border-b py-1 text-base-300 text-xs">Feed your pet 5
+        times to earn an achievement</li>
+        <li id="contest-conqueror-placeholder" class="border-b py-1 text-base-300 text-xs">Win every contest
+            to earn this achievement</li>
+        <li id="smarty-pants-placeholder" class="border-b py-1 text-base-300 text-xs">Get a perfect score in
+            animal trivia to earn this achievement</li>
+        <li id="cash-cow-placeholder" class="border-b py-1 text-base-300 text-xs">Earn $100 to earn this
+            achievement</li>
+        <li id="skill-master-placeholder" class="border-b py-1 text-base-300 text-xs">Max out every skill to
+            earn this achievement</li>`
+    )
+
     const achieveRes = await fetch('/api/achievements')
     const achievements = await achieveRes.json()
     achievements.forEach(achieve => {
@@ -165,8 +201,19 @@ const renderGame = async () => {
         )
     })
 
+    // If this is the first time starting a game, add the event listeners to the elements on in the DOM
+    if (gamesStarted < 1) {
+        addEventListeners()
+    }
+    
+    // Remove the beginning Choose Pet Form
+    choosePetForm.remove()
+}
+
+const addEventListeners = () => {
     // Add clicking on pet interaction
     let lastClickTime = 0
+    const petPic = document.querySelector('#pet-pic')
     petPic.addEventListener('click', () => {
         const currentTime = new Date().getTime();
 
@@ -256,16 +303,15 @@ const renderGame = async () => {
         btn.addEventListener('click', () => feedPet(btn.name))
     })
 
-    // Remove the beginning Choose Pet Form
-    choosePetForm.remove()
+    // Add event listener to restart game button
+    const restartGameBtn = document.querySelector('#restart-game-btn')
+    restartGameBtn.addEventListener('click', resetGame)
 }
 
 const beginGameBtn = document.querySelector('#begin-game')
 beginGameBtn.addEventListener('click', startNewGame)
 
 // UPDATE AND RENDER MONEY ---------------------------------------------
-let moneyEarned = 0
-
 const updateAndRenderMoney = async (direction, amount) => {
 
     // fetch money from api
@@ -315,7 +361,7 @@ const updateAndRenderMoney = async (direction, amount) => {
 // ADD A HISTORY MOMENT ---------------------------------------------
 const addToHistory = async (text) => {
     // add history moment to API
-    const res = await fetch('api/history', {
+    const res = await fetch('/api/history', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -328,7 +374,7 @@ const addToHistory = async (text) => {
 
     // If the array is longer than 20, delete the oldest one
     if (historyArray.length > 20) {
-        const response = await fetch('api/history', {
+        const response = await fetch('/api/historyMoment', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -441,25 +487,129 @@ const updatePetNeedBars = (need, direction, amount) => {
 }
 
 // GAME OVER ---------------------------------------------
-const gameOver = () => {
+const gameOver = async () => {
     dashboard.remove()
 
     main.insertAdjacentHTML(
         'beforeend',
-        `<div class="hero min-h-screen">
+        `<div id="game-over" class="hero min-h-screen">
             <div class="hero-content text-center">
             <div class="max-w-md">
                 <h1 class="text-5xl font-bold">GAME OVER</h1>
                 <p class="py-6">${myPet.name} died</p>
+                <button id="play-again-btn" class="btn btn-primary">Play Again</button>
             </div>
             </div>
         </div>`
     )
+
+    const playAgainBtn = document.querySelector('#play-again-btn')
+    playAgainBtn.addEventListener('click', () => {
+        gamesStarted++
+        resetGame()
+    } )
+    
+}
+
+const resetGame = async () => {
+    const gameOver = document.querySelector('#game-over')
+    if (gameOver) {
+        gameOver.remove()
+    } else {
+        dashboard.remove()
+    }
+
+    // delete the current pet
+    const petRes = await fetch('/api/mypet', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    const pet = await petRes.json()
+
+    // reset variables
+    myPet = pet
+    moneyEarned = 0
+    timesFed = 0
+    contestsWon = {
+        'agility-challenge': false,
+        'strength-showdown': false,
+        'mind-maze': false,
+        'stealthy-infiltration': false,
+        'endurance-marathon': false,
+        'hunting-expedition': false
+    }
+
+    // reset money
+    fetch('api/money', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            money: 80
+        })
+    })
+
+    // reset history
+    fetch('/api/history', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    // reset inventory
+    fetch('/api/inventory', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    // reset petSkills
+    fetch('/api/petskills', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    // reset achievements
+    fetch('/api/achievements', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    // const achievementContainer = document.querySelector('#achievement-container')
+    // while (achievementContainer.firstChild) {
+    //     achievementContainer.removeChild(achievementContainer.firstChild)
+    // }
+
+    // achievementContainer.insertAdjacentHTML(
+    //     'beforeend',
+    //     `<li id="five-star-feeder-placeholder" class="border-b py-1 text-base-300 text-xs">Feed your pet 5
+    //     times to earn an achievement</li>
+    //     <li id="contest-conqueror-placeholder" class="border-b py-1 text-base-300 text-xs">Win every contest
+    //         to earn this achievement</li>
+    //     <li id="smarty-pants-placeholder" class="border-b py-1 text-base-300 text-xs">Get a perfect score in
+    //         animal trivia to earn this achievement</li>
+    //     <li id="cash-cow-placeholder" class="border-b py-1 text-base-300 text-xs">Earn $100 to earn this
+    //         achievement</li>
+    //     <li id="skill-master-placeholder" class="border-b py-1 text-base-300 text-xs">Max out every skill to
+    //         earn this achievement</li>`
+    // )
+
+    // Display the choose pet form
+    choosePetForm.reset()
+    main.appendChild(choosePetForm)
 }
 
 
 // FEED PET ---------------------------------------------
-let timesFed = 0
 const feedPet = async (item) => {
     let inventory
 
@@ -1072,15 +1222,6 @@ const trainSkill = async (skill, level) => {
 
 
 // PET CONTESTS ---------------------------------------------
-let contestsWon = {
-    'agility-challenge': false,
-    'strength-showdown': false,
-    'mind-maze': false,
-    'stealthy-infiltration': false,
-    'endurance-marathon': false,
-    'hunting-expedition': false
-}
-
 const enterContest = async (contest, mainSkill, otherSkill) => {
     const contestContainer = document.querySelector('#contest-container')
     const chooseContest = document.querySelector('#choose-a-contest')

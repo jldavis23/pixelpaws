@@ -26,7 +26,7 @@
                     <div class="tooltip tooltip-accent w-1/2 aspect-w-3 aspect-h-2 hover:cursor-pointer"
                         data-tip="Click to pet your pet!"><img src="" id="pet-pic" class=""></div>
 
-                    <div class="flex flex-col gap-3 w-1/2 text-xs leading-tight">
+                    <div id="pet-need-section" class="flex flex-col gap-3 w-1/2 text-xs leading-tight">
                         <div>
                             <p>Happiness <span id="happiness-label">100%</span></p>
                             <progress id="happiness-bar" class="progress progress-primary" value="100"
@@ -53,6 +53,8 @@
                         <p>Personality: <span id="pet-personality">Quiet</span></p>
 
                         <p class="text-primary text-base">MONEY: <span id="money-display">100</span></p>
+
+                        <div id="restart-game-btn"><button class="btn btn-xs">Restart Game</button></div>
                     </div>
                 </div>
             </div>
@@ -183,7 +185,7 @@
                         </div>
                     </li> -->
 
-                    <li id="five-star-feeder-placeholder" class="border-b py-1 text-base-300 text-xs">Feed your pet 5
+                    <!-- <li id="five-star-feeder-placeholder" class="border-b py-1 text-base-300 text-xs">Feed your pet 5
                         times to earn an achievement</li>
                     <li id="contest-conqueror-placeholder" class="border-b py-1 text-base-300 text-xs">Win every contest
                         to earn this achievement</li>
@@ -192,7 +194,7 @@
                     <li id="cash-cow-placeholder" class="border-b py-1 text-base-300 text-xs">Earn $100 to earn this
                         achievement</li>
                     <li id="skill-master-placeholder" class="border-b py-1 text-base-300 text-xs">Max out every skill to
-                        earn this achievement</li>
+                        earn this achievement</li> -->
                 </ul>
             </div>
         </section>

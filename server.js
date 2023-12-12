@@ -337,6 +337,13 @@ app.post('/api/achievements/', (req, res) => {
     res.send(myAchievements[myAchievements.length - 1])
 })
 
+// DELETE ACHIEVEMENTS
+app.delete('/api/achievements', (req, res) => {
+    myAchievements = []
+
+    res.send(myAchievements)
+})
+
 
 // MY PET ---------------------------------------------
 
@@ -348,6 +355,13 @@ app.get('/api/mypet', (req, res) => {
 // POST MY PET (create)
 app.post('/api/mypet', (req, res) => {
     myPet = req.body
+
+    res.send(myPet)
+})
+
+// DELETE MY PET
+app.delete('/api/mypet', (req, res) => {
+    myPet = {}
 
     res.send(myPet)
 })
@@ -388,6 +402,17 @@ app.put('/api/inventory/:item', (req, res) => {
     res.send(myInventory)
 })
 
+// DELETE INVENTORY
+app.delete('/api/inventory', (req, res) => {
+    myInventory = {
+        kibble: 0,
+        treat: 0,
+        medicine: 0
+    }
+
+    res.send(myInventory)
+})
+
 // PET SKILLS ---------------------------------------------
 
 // GET PET SKILLS
@@ -410,6 +435,20 @@ app.put('/api/petskills/:skill', (req, res) => {
     res.send({ [skill]: petSkills[skill] })
 })
 
+// DELETE PET SKILLS
+app.delete('/api/petskills', (req, res) => {
+    petSkills = {
+        agility: 5,
+        strength: 5,
+        intelligence: 5,
+        stealth: 5,
+        endurance: 5,
+        hunting: 5
+    }
+
+    res.send(petSkills)
+})
+
 // HISTORY --------------------------------
 
 // GET HISTORY
@@ -425,8 +464,15 @@ app.post('/api/history', (req, res) => {
 })
 
 // DELETE HISTORY MOMENT
-app.delete('/api/history', (req, res) => {
+app.delete('/api/historyMoment', (req, res) => {
     history.shift()
+
+    res.send(history)
+})
+
+// DELETE ALL HISTORY
+app.delete('/api/history', (req, res) => {
+    history = []
 
     res.send(history)
 })
