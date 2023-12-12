@@ -24,7 +24,9 @@ app.use((req, res, next) => {
 // DATA ---------------------------------------------
 let money = 80
 
-let myPet 
+let myPet = {
+
+}
 
 let history = []
 

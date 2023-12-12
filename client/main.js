@@ -2,11 +2,31 @@
 const main = document.querySelector('#main')
 const choosePetForm = document.querySelector('#choose-pet-form')
 const dashboard = document.querySelector('#dashboard')
-dashboard.remove()
 
 let myPet
 
-const renderGame = async (e) => {
+const getMyPet = async () => {
+    const res = await fetch('api/mypet')
+    const pet = await res.json()
+    return pet
+}
+
+const initializeApp = async () => {
+    const pet = await getMyPet()
+
+    if (pet.type) {
+        myPet = pet
+        renderGame()
+    } else {
+        dashboard.remove()
+    }
+}
+
+initializeApp()
+
+
+
+const startNewGame = async (e) => {
     e.preventDefault()
 
     // Add the dashboard to the DOM
@@ -31,8 +51,6 @@ const renderGame = async (e) => {
         return
     }
     petData.type = selectedPet
-    const petPic = document.querySelector('#pet-pic')
-    petPic.src = `images/${selectedPet}/default.png`
 
     // Assign the inputed name
     const nameInput = document.querySelector('#name-input')
@@ -42,8 +60,6 @@ const renderGame = async (e) => {
         return
     }
     petData.name = nameInput.value
-    const petName = document.querySelector('#pet-name')
-    petName.textContent = nameInput.value
 
     // Assign the pet's personality
     const personalityOptions = document.getElementsByName('personality-options')
@@ -57,8 +73,6 @@ const renderGame = async (e) => {
         return
     }
     petData.personality = selectedPersonality
-    const petPersonality = document.querySelector('#pet-personality')
-    petPersonality.textContent = selectedPersonality
 
     // Send the petData to server to update myPet
     try {
@@ -75,11 +89,33 @@ const renderGame = async (e) => {
         console.error(err)
     }
 
+    renderGame()
+
+    // Send welcome message
+    sendToastMsg("Welcome! Make sure you keep an eye on your pet's needs. If your pet's health reaches zero, they'll die!")
+
+    // Add a welcome history moment
+    addToHistory(`Congrats! You adopted ${myPet.name}`)
+}
+
+const renderGame = async () => {
     // Start decaying the pet's needs for each category
     decayPetNeed('happiness')
     decayPetNeed('health')
     decayPetNeed('hunger')
     decayPetNeed('sleep')
+
+    // Render the pet's picture
+    const petPic = document.querySelector('#pet-pic')
+    petPic.src = `images/${myPet.type}/default.png`
+
+    // Render the pet's name
+    const petName = document.querySelector('#pet-name')
+    petName.textContent = myPet.name
+
+    // Render the pet's personality
+    const petPersonality = document.querySelector('#pet-personality')
+    petPersonality.textContent = myPet.personality
 
     // Render the pet's skills
     const skills = await getPetSkills()
@@ -104,7 +140,7 @@ const renderGame = async (e) => {
     const achieveRes = await fetch('/api/achievements')
     const achievements = await achieveRes.json()
     achievements.forEach(achieve => {
-        if (achieve.earned) awardAchievement(achieve.id)
+        if (achieve.earned) awardAchievement(achieve.id, achieve.name, achieve.description)
     })
 
     // Render the inventory
@@ -113,8 +149,21 @@ const renderGame = async (e) => {
     // Display the player's money
     updateAndRenderMoney()
 
-    // Add a welcome history moment
-    addToHistory(`Congrats! You adopted ${petData.name}`)
+    // Render the player's History
+    const historyRes = await fetch('api/history')
+    const history = await historyRes.json()
+
+    const historyContainer = document.querySelector('#history-container')
+    while (historyContainer.firstChild) {
+        historyContainer.removeChild(historyContainer.firstChild)
+    }
+
+    history.forEach(moment => {
+        historyContainer.insertAdjacentHTML(
+            'afterbegin',
+            `<li class="border-b py-2 text-xs">${moment}</li>`
+        )
+    })
 
     // Add clicking on pet interaction
     let lastClickTime = 0
@@ -126,10 +175,10 @@ const renderGame = async (e) => {
             updatePetNeedBars('happiness', 'increase', 1)
             sendToastMsg(`${myPet.name} loves the attention!`)
 
-            petPic.src = `images/${selectedPet}/happy.png`
+            petPic.src = `images/${myPet.type}/happy.png`
 
             setTimeout(() => {
-                petPic.src = `images/${selectedPet}/default.png`
+                petPic.src = `images/${myPet.type}/default.png`
             }, 5000)
 
             // Update the last click time
@@ -209,13 +258,10 @@ const renderGame = async (e) => {
 
     // Remove the beginning Choose Pet Form
     choosePetForm.remove()
-
-    // Send welcome message
-    sendToastMsg("Welcome! Make sure you keep an eye on your pet's needs. If your pet's health reaches zero, they'll die!")
 }
 
 const beginGameBtn = document.querySelector('#begin-game')
-beginGameBtn.addEventListener('click', renderGame)
+beginGameBtn.addEventListener('click', startNewGame)
 
 // UPDATE AND RENDER MONEY ---------------------------------------------
 let moneyEarned = 0
